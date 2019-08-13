@@ -1,0 +1,14 @@
+cct1:
+  data:
+    extra:
+      product_id: 12345678
+      limit_pay: no_credit
+      goods_list:
+        - goods_name: iPhoneX 512G
+          goods_num: 2
+        - goods_name: iPhoneXs 512G
+          goods_num: 5
+  expected:
+    extra:
+      product_id: 12345678
+      limit_pay: no_credit

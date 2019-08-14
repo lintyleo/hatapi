@@ -1,3 +1,5 @@
+from page import BaseApi
+
 
 def biz_view_life_suggestion(data_input_dict):
     """
@@ -16,4 +18,15 @@ def biz_view_life_suggestion(data_input_dict):
             location/country
     """
     # TODO: 场景方法，给测试用例使用，查询生活指数
-    return []
+    return {}
+
+
+class SeniverseApi(BaseApi):
+    __api_key = None
+
+    def __init__(self, api_key):
+        self.__api_key = api_key
+
+    @property
+    def api_key(self):
+        return self.__api_key

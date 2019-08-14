@@ -1,4 +1,4 @@
-def biz_create_charge(data_input_dict:dict):
+def biz_create_charge(data_input_dict: dict):
     """
     场景：创建支付对象的场景，事实上会调用 /v1/charge POST 请求
     :param data_input_dict: dict 必须是字典，至少有以下的 key

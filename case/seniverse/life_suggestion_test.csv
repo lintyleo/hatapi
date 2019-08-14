@@ -1,0 +1,6 @@
+说明,数据编号,私钥,location,language,期望城市名称,期望国家代号,期望状态码
+直接用 ip 两个字判断城市,lst1,SaWYuNAz7qDHmbTEY,ip,en,Shenzhen,CN,200
+使用台北IP地址,lst2,S6dWzJHBE1YuGg2kb,123.193.100.221,zh-Hant,臺北,CN,200
+使用香港IP地址,lst3,S44MbssOQntuh_Q__,183.182.31.255,zh-Hans,香港,CN,200
+使用北京的城市编号,lst4,S44MbssOQntuh_Q__,WX4FBXXFKE4F,zh-Hans,北京,CN,200
+使用包头的城市编号,lst5,S44MbssOQntuh_Q__,WRNP70PG2MPX,zh-Hans,包头,CN,200

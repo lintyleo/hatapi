@@ -1,6 +1,7 @@
 from page import BaseApi
 
 
+# 以下是测试用例使用的场景
 def biz_view_life_suggestion(data_input_dict):
     """
     场景：查询生活指数的场景，事实上会调用 /v3/life/suggestion.json GET 请求
@@ -21,6 +22,7 @@ def biz_view_life_suggestion(data_input_dict):
     return {}
 
 
+# 以下为 业务类使用的 心知天气 业务基类
 class SeniverseApi(BaseApi):
     __api_key = None
 

@@ -2,6 +2,8 @@ from page import BaseApi
 from page.pingxx.charge_api import ChargeApi
 
 
+# 以下是测试用例使用的场景
+
 def biz_create_charge(data_input_dict: dict):
     """
     场景：创建支付对象的场景，事实上会调用 /v1/charge POST 请求
@@ -59,6 +61,8 @@ def biz_create_and_view_charge(data_input_dict: dict):
     result_view = api.view(id)
     return result_create, result_view
 
+
+# 以下为 业务类使用的 Ping++ 业务基类
 
 class PingxxApi(BaseApi):
     __auth = None

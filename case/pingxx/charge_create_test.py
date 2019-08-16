@@ -2,11 +2,11 @@ import allure
 import pytest
 
 from base import read_csv, read_yaml
-from case import BaseCase
+from case import BaseTest
 from page.pingxx import biz_create_charge
 
 
-class ChargeCreateTest(BaseCase):
+class ChargeCreateTest(BaseTest):
     """
     标题： 在支付对象接口，使用合法有效的数据请求 创建支付的接口，创建成功
     作者： 刘挺立

@@ -1,64 +1,50 @@
+from base.infrastructure import Logger
 
+__version__ = "2.0.2"
+__author__ = "ArtLinty"
 
 """
 # Usage：
-# call build_driver() for web browser instance
 # call build_request() for web api instance
 """
 
-from base.box import BoxDriver
 from base.box import BoxRequest
 from base.helper import CsvHelper, PathHelper, DbHelper, YamlHelper, JsonHelper, read_txt_format
-from base.infra import Logger
 
 """
 main portal, for web browser driver
 """
 
-
-def build_driver(url, driver_type, wait_seconds=None):
-    """
-    get driver for web browser testing
-    :param wait_seconds:
-    :param url: str，访问浏览器的 url
-    :param driver_type: str，指定浏览器的类型，忽略大小写
-        : c, chrome
-        : i, ie
-        : f, firefox
-        : o, opera
-        : s, safari
-        : h, headless, headless_chrome, hc
-    :return: BoxDriver
-    """
-    if not isinstance(driver_type, str):
-        driver_type = 'c'
-
-    driver_type = _parse_type(driver_type.lower())
-    if wait_seconds:
-        driver = BoxDriver(driver_type, wait_seconds=wait_seconds)
-    else:
-        driver = BoxDriver(driver_type)
-    driver.navigate(url)
-    driver.maximize_window()
-    return driver
-
-
 """
 main portal, for web api request
 """
+__SUPPORT_SCHEMA_LIST = ["HTTPS", "HTTP"]
 
 
 def build_request(
-        host,
+        schema: str,
+        host: str,
         port=None):
     """
     get request for web api testing
+    :param schema:
     :param port: 主机端口号
     :param host: API 网址的 主机部分
     :return: BoxRequest
     """
 
-    return BoxRequest(host=host, port=port)
+    if schema is not None and schema.upper().strip() in __SUPPORT_SCHEMA_LIST:
+        if schema.upper().strip() == "HTTP":
+            schema = BoxRequest.RequestType.HTTP
+        elif schema.upper().strip() == "HTTPS":
+            schema = BoxRequest.RequestType.HTTPS
+        else:
+            raise TypeError(
+                "请传递一个合法的请求协议, 当前使用的 schema = %r"
+                % schema
+            )
+
+    return BoxRequest(schema=schema, host=host, port=port)
 
 
 """
@@ -76,32 +62,6 @@ def build_logger(log_path):
         log_path=log_path,
         call_path=__name__
     )
-
-
-def _parse_type(driver_type):
-    """
-    parse driver type
-    :param driver_type: str: driver type
-        chrome: c or chrome
-        firefox: f or firefox
-        ie: i or ie
-        safari: s or safari
-        headless chrome: h or hc or headless, headless chrome
-    :return: default value: BoxDriver.DriverType.CHROME
-    """
-    if driver_type == 'c' or driver_type == "chrome":
-        return BoxDriver.DriverType.CHROME
-    elif driver_type == 'f' or driver_type == "firefox":
-        return BoxDriver.DriverType.FIREFOX
-    elif driver_type == 'i' or driver_type == "ie":
-        return BoxDriver.DriverType.IE
-    elif driver_type == 's' or driver_type == "safari":
-        return BoxDriver.DriverType.SAFARI
-    elif driver_type == 'h' or driver_type == "headless" \
-            or driver_type == "hc" or driver_type == "headless_chrome":
-        return BoxDriver.DriverType.CHROME_HEADLESS
-
-    return BoxDriver.DriverType.CHROME
 
 
 def read_txt(current_file_path, txt_to_current):
@@ -137,6 +97,7 @@ def read_yaml(current_file_path, yml_to_current, key_of_page):
     yml_file = PathHelper.get_actual_path_by_current_file(current_file_path, yml_to_current)
     return YamlHelper.get_config_as_dict(yml_file, key_of_page)
 
+
 def read_csv(current, file_path):
     """
     读 CSV 文件，CSV 文件必须有标题
@@ -160,7 +121,6 @@ def read_yaml(current, file_path, key):
     return YamlHelper.get_config_as_dict(file=yml_file, key=key)
 
 
-
 def read_json(current_file_path, json_to_current):
     """
     读 Json 文件，然后转化为 dict
@@ -172,7 +132,7 @@ def read_json(current_file_path, json_to_current):
     return JsonHelper.read_json_file_as_dict(json_file)
 
 
-def parse_json(json_dict:dict, data_key, index=None, sub_key=None):
+def parse_json(json_dict: dict, data_key, index=None, sub_key=None):
     """
     解析 JSON
     :param json_dict: 被解析的 JSON 的字典格式

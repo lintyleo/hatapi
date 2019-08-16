@@ -2,11 +2,11 @@ import allure
 import pytest
 
 from base import read_csv, read_yaml
-from case import BaseCase
+from case import BaseTest
 from page.seniverse import biz_view_life_suggestion
 
 
-class LifeSuggestionTest(BaseCase):
+class LifeSuggestionTest(BaseTest):
     """
     标题： 在生活指数接口，使用合法有效的数据请求 查询生活指数的接口，查询成功
     作者： 刘挺立

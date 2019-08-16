@@ -35,15 +35,15 @@ class ChargeApi(PingxxApi):
         # headers
         req_headers = self._get_headers(uri=req_uri, body=req_data)
         # 真正的发请求
-        self._send(uri=req_uri,
-                   method=req_method,
-                   body=req_data,
-                   auth=req_auth,
-                   cookies=req_cookies,
-                   headers=req_headers)
+        self.send(uri=req_uri,
+                  method=req_method,
+                  body=req_data,
+                  auth=req_auth,
+                  cookies=req_cookies,
+                  headers=req_headers)
         # 返回响应的结果
         resp_body_key_list = ["id", "object", "created", "livemode"]
-        return self._parse(body_key_list=resp_body_key_list)
+        return self.parse(body_key_list=resp_body_key_list)
 
     def view(self, id: str):
         # 格式化处理请求的数据
@@ -58,10 +58,10 @@ class ChargeApi(PingxxApi):
         # headers
         req_headers = {}
         # 真正的发请求
-        self._send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
+        self.send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
         # 返回响应的结果
         resp_body_key_list = []
-        return self._parse(body_key_list=resp_body_key_list)
+        return self.parse(body_key_list=resp_body_key_list)
 
     def query(self):
         # 格式化处理请求的数据
@@ -76,10 +76,10 @@ class ChargeApi(PingxxApi):
         # headers
         req_headers = {}
         # 真正的发请求
-        self._send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
+        self.send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
         # 返回响应的结果
         resp_body_key_list = []
-        return self._parse(body_key_list=resp_body_key_list)
+        return self.parse(body_key_list=resp_body_key_list)
 
     def reverse(self):
         # 格式化处理请求的数据
@@ -94,7 +94,7 @@ class ChargeApi(PingxxApi):
         # headers
         req_headers = {}
         # 真正的发请求
-        self._send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
+        self.send(uri=req_uri, method=req_method, auth=req_auth, cookies=req_cookies, headers=req_headers)
         # 返回响应的结果
         resp_body_key_list = []
-        return self._parse(body_key_list=resp_body_key_list)
+        return self.parse(body_key_list=resp_body_key_list)

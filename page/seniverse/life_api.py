@@ -20,12 +20,12 @@ class LifeApi(SeniverseApi):
         # headers
         req_headers = {}
         # 真正的发请求
-        self._send(uri=req_uri,
-                   method=req_method,
-                   params=req_data,
-                   auth=req_auth,
-                   cookies=req_cookies,
-                   headers=req_headers)
+        self.send(uri=req_uri,
+                  method=req_method,
+                  params=req_data,
+                  auth=req_auth,
+                  cookies=req_cookies,
+                  headers=req_headers)
         # 返回响应的结果
         resp_body_key_list = ["id", "object", "created", "livemode"]
-        return self._parse(body_key_list=resp_body_key_list)
+        return self.parse(body_key_list=resp_body_key_list)

@@ -1,3 +1,6 @@
+__version__ = "2.0.2"
+__author__ = "ArtLinty"
+
 import json
 from enum import Enum
 
@@ -8,10 +11,11 @@ from urllib3.exceptions import InsecureRequestWarning
 
 disable_warnings(InsecureRequestWarning)
 
-_CHARACTER_COMMA = ","
-_CHARACTER_COLON = ":"
-_WAIT_SECONDS = 3
-_DEFAULT_ENCODING_UTF8 = "utf-8"
+__CHARACTER_COMMA = ","
+__CHARACTER_COLON = ":"
+__WAIT_SECONDS = 5
+__DEFAULT_ENCODING_UTF8 = "utf-8"
+__SUPPORT_METHOD_LIST = ["GET", "POST", "HEAD", "PUT", "DELETE"]
 
 
 class BoxRequest(object):
@@ -30,24 +34,18 @@ class BoxRequest(object):
     __cookies = None
     __response = None
 
-    class RequestSchema(Enum):
+    class RequestType(Enum):
         """
         请求类型
         """
         HTTP = 1,
         HTTPS = 2
 
-    class RequestMethod(Enum):
-        """
-        请求类型
-        """
-        GET = 1,
-        POST = 2,
-        PUT = 3,
-        DELETE = 4,
-        HEAD = 2
+    """
+    构造方法
+    """
 
-    def __init__(self, schema: RequestSchema, host: str, port=None):
+    def __init__(self, schema: RequestType, host: str, port=None):
         """
         构造方法
         :param schema: 请求协议，RequestType 类
@@ -60,7 +58,11 @@ class BoxRequest(object):
         self.__headers = {}
         self.__cookies = {}
 
-    def send(self, uri: str, method: RequestMethod,
+    """
+    成员方法
+    """
+
+    def send(self, uri: str, method: str,
              data_dict: dict, is_json_content: bool,
              headers=None, cookies=None, auth=None, files=None
              ):
@@ -76,9 +78,15 @@ class BoxRequest(object):
         :param auth:
         :return:
         """
+        if method is not None and method in __SUPPORT_METHOD_LIST:
+            method = method.upper().strip()
+        else:
+            raise TypeError(
+                "请传递一个合法的 HTTP 请求方法, 当前使用的 method = %r"
+                % method
+            )
 
         url = self._pre_url(uri=uri, auth=auth)
-        request_method = self._pre_method(method=method)
 
         if headers is not None and isinstance(headers, dict):
             self.__headers.update(headers)
@@ -87,41 +95,8 @@ class BoxRequest(object):
             self.__cookies.update(cookies)
 
         with Session() as s:
-            self._request(session=s, method=request_method, url=url, data_dict=data_dict,
+            self._request(session=s, method=method, url=url, data_dict=data_dict,
                           is_json_content=is_json_content, files=files)
-
-    def _pre_url(self, uri, auth=None):
-        """
-        请求前置操作
-        :param uri:
-        :param auth:
-        :return:
-        """
-        if auth:
-            if isinstance(auth, tuple) and len(auth) == 2:
-                # special-case basic HTTP auth
-                self.__auth = HTTPBasicAuth(*auth)
-            elif isinstance(auth, dict):
-                auth_headers = {auth["key"]: auth["value"]}
-                self.__headers.update(auth_headers)
-            elif isinstance(auth, str):
-                auth_headers = dict(Authorization=auth)
-                self.__headers.update(auth_headers)
-
-        url = None
-        if self.__schema == self.RequestSchema.HTTP:
-            url = "http://"
-        if self.RequestSchema.HTTPS:
-            url = "https://"
-
-        if self.__host.endswith("/"):
-            self.__host = self.__host[0:len(self.__host) - 1]
-
-        if self.__port:
-            url = "%s%s:%d%s" % (url, self.__host, self.__port, uri)
-        else:
-            url = url, self.__host, uri
-        return url
 
     def close(self):
         """
@@ -135,55 +110,9 @@ class BoxRequest(object):
         self.__cookies = None
         self.__response = None
 
-    def _request(self, session: Session,
-                 url: str, method: str, data_dict: dict, is_json_content: bool, files=None):
-        """
-        具体发送请求
-        :param session:
-        :return:
-        """
-        params = jsons = data = None
-        if method.lower() in ("get", "delete", "head"):
-            params = data_dict
-        elif method.lower() in ("post", "put"):
-            if is_json_content:
-                jsons = data_dict
-            else:
-                data = data_dict
-
-        if session is not None:
-            self.__response = session.request(
-                method=method.upper(),
-                url=url,
-                headers=self.__headers,
-                cookies=self.__cookies,
-                auth=self.__auth,
-                data=data,
-                params=params,
-                json=jsons,
-                files=files,
-                verify=False
-            )
-
-    def _pre_method(self, method: RequestMethod):
-        """
-        处理请求方法
-        :param method:
-        :return:
-        """
-        m = "POST"
-        if method == self.RequestMethod.GET:
-            m = "GET"
-        elif method == self.RequestMethod.POST:
-            m = "POST"
-        elif method == self.RequestMethod.HEAD:
-            m = "HEAD"
-        elif method == self.RequestMethod.PUT:
-            m = "PUT"
-        elif method == self.RequestMethod.DELETE:
-            m = "DELETE"
-
-        return m
+    """
+    属性
+    """
 
     @property
     def json_dict(self):
@@ -249,6 +178,73 @@ class BoxRequest(object):
 
         return None
 
+    """
+    私有方法
+    """
+
+    def _pre_url(self, uri, auth=None):
+        """
+        请求前置操作
+        :param uri:
+        :param auth:
+        :return:
+        """
+        if auth:
+            if isinstance(auth, tuple) and len(auth) == 2:
+                # special-case basic HTTP auth
+                self.__auth = HTTPBasicAuth(*auth)
+            elif isinstance(auth, dict):
+                auth_headers = {auth["key"]: auth["value"]}
+                self.__headers.update(auth_headers)
+            elif isinstance(auth, str):
+                auth_headers = dict(Authorization=auth)
+                self.__headers.update(auth_headers)
+
+        url = None
+        if self.__schema == self.RequestType.HTTP:
+            url = "http://"
+        if self.RequestType.HTTPS:
+            url = "https://"
+
+        if self.__host.endswith("/"):
+            self.__host = self.__host[0:len(self.__host) - 1]
+
+        if self.__port:
+            url = "%s%s:%d%s" % (url, self.__host, self.__port, uri)
+        else:
+            url = url, self.__host, uri
+        return url
+
+    def _request(self, session: Session,
+                 url: str, method: str, data_dict: dict, is_json_content: bool, files=None):
+        """
+        具体发送请求
+        :param session:
+        :return:
+        """
+        params = jsons = data = None
+        if method.lower() in ("get", "delete", "head"):
+            params = data_dict
+        elif method.lower() in ("post", "put"):
+            if is_json_content:
+                jsons = data_dict
+            else:
+                data = data_dict
+
+        if session is not None:
+            self.__response = session.request(
+                method=method.upper(),
+                url=url,
+                headers=self.__headers,
+                cookies=self.__cookies,
+                auth=self.__auth,
+                data=data,
+                params=params,
+                json=jsons,
+                files=files,
+                verify=False
+            )
+
     def _dump_json(self):
         """
         字典 dict 转为 json
@@ -256,7 +252,7 @@ class BoxRequest(object):
         """
         json_string = json.dumps(self._load_json(),
                                  indent=4,
-                                 separators=(_CHARACTER_COMMA, _CHARACTER_COLON))
+                                 separators=(__CHARACTER_COMMA, __CHARACTER_COLON))
         if json_string is not None and isinstance(json_string, str):
             return json_string.encode('utf-8').decode('unicode_escape')
 

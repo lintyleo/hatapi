@@ -33,9 +33,25 @@ class BaseApi(object):
              headers=None,
              files=None,
              is_json_content=True):
-        # TODO: 在业务的基类中，定义的发请求的方法
-        self.info("")
-        pass
+        """
+        发送 HTTP/HTTPS 请求
+        :param uri: 请求网址的路径部分（去掉协议，主机和端口）
+        :param method:  请求方法
+        :param data_dict:  请求需要传递的数据，与请求方法无关
+        :param auth:  请求的授权认证
+            支持 HTTP basic Auth， 传递 tuple，两个元素，分别是用户名和密码
+            支持 Auth 2.0 认证，传递 str，字符串
+            支持 自定义或者其他认证，传递 dict，两个key： key 和 value
+        :param cookies:
+        :param headers: 请求头
+        :param files:  请求文件
+        :param is_json_content: 是否是 JSON 格式的内容
+        :return:
+        """
+
+        self.info("[%s] - 在 BaseApi 类中发送请求，使用的数据：uri=%s, method=%s, data_dict=%r, auth=%r"
+                  % (__name__, uri, method, data_dict, auth))
+
         if self.request is not None and isinstance(self.request, BoxRequest):
             self.request.send(
                 uri=uri,
@@ -54,8 +70,9 @@ class BaseApi(object):
         :param body_key_list: 需要解析的响应正文中的 key 的列表
         :return:
         """
-        # TODO: 在业务的基类中，定义的收响应的方法
-        self.info("")
+        self.info("[%s] - 在 BaseApi 中解析响应结果，使用数据：body_key_list=%r, data_dict=%r"
+                  % (__name__, body_key_list, self.json_dict))
+
         resp = self._parse_http_resp()
         for data_Key in body_key_list:
             value = parse_json(json_dict=self.json_dict, data_key=data_Key)
@@ -64,6 +81,44 @@ class BaseApi(object):
                       % (__name__, data_Key, value))
 
         return resp
+
+    @property
+    def request(self):
+        """
+        get current request
+        :return:
+        """
+        return self.__request
+
+    @property
+    def response(self):
+        """
+        get current response
+        :return:
+        """
+        if self.request and isinstance(self.request, BoxRequest):
+            return self.request.response_dict
+
+        return None
+
+    @property
+    def logger(self):
+        """
+        日志对象，给业务使用，让他使用这个对象写日志，把他做的事情记录在里面
+        :return:
+        """
+        return self.__logger
+
+    @property
+    def json_dict(self):
+        """
+        当前业务API 的json 字典
+        :return:  dict
+        """
+        if self.request and isinstance(self.request, BoxRequest):
+            return self.request.json_dict
+
+        return None
 
     def _remove_none_param(self, params: dict):
         """
@@ -115,41 +170,3 @@ class BaseApi(object):
         first_resp.update(second_resp)
         self.info("[%s] - 合并了两个字典，first=%r, second=%r" % (__name__, first_resp, second_resp))
         return first_resp
-
-    @property
-    def request(self):
-        """
-        get current request
-        :return:
-        """
-        return self.__request
-
-    @property
-    def response(self):
-        """
-        get current response
-        :return:
-        """
-        if self.request and isinstance(self.request, BoxRequest):
-            return self.request.response_dict
-
-        return None
-
-    @property
-    def logger(self):
-        """
-        日志对象，给业务使用，让他使用这个对象写日志，把他做的事情记录在里面
-        :return:
-        """
-        return self.__logger
-
-    @property
-    def json_dict(self):
-        """
-        当前业务API 的json 字典
-        :return:  dict
-        """
-        if self.request and isinstance(self.request, BoxRequest):
-            return self.request.json_dict
-
-        return None

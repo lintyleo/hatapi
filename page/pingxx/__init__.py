@@ -27,39 +27,53 @@ def biz_create_charge(data_input_dict: dict):
         接口的默认首层返回值
     """
     # TODO: 场景方法，给测试用例使用，创建支付
-    api = ChargeApi(secret_key=data_input_dict["secret_key"])
-    data_dict = dict(
-        order_no=data_input_dict["order_no"]
-    )
-    result = api.create(data_dict)
+    api = ChargeApi(secret_key=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["secret_key"],
+                    request=data_input_dict["request"],
+                    logger=data_input_dict["logger"]
+                    )
+
+    result = api.create(data_input_dict)
 
     return result
 
 
 def biz_view_charge(data_input_dict: dict):
-    api = ChargeApi()
-    result = api.view()
+    api = ChargeApi(secret_key=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["secret_key"],
+                    request=data_input_dict["request"],
+                    logger=data_input_dict["logger"])
+    result = api.view(data_input_dict["charge_id"])
     return result
 
 
 def biz_reverse_charge(data_input_dict: dict):
-    api = ChargeApi()
-    result = api.reverse()
+    api = ChargeApi(secret_key=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["secret_key"],
+                    request=data_input_dict["request"],
+                    logger=data_input_dict["logger"])
+    result = api.reverse(data_input_dict["charge_id"])
     return result
 
 
 def biz_query_charge(data_input_dict: dict):
-    api = ChargeApi()
-    result = api.query()
+    api = ChargeApi(secret_key=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["secret_key"],
+                    request=data_input_dict["request"],
+                    logger=data_input_dict["logger"])
+    result = api.query(data_input_dict)
     return result
 
 
 def biz_create_and_view_charge(data_input_dict: dict):
-    api = ChargeApi()
+    api = ChargeApi(secret_key=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["secret_key"],
+                    request=data_input_dict["request"],
+                    logger=data_input_dict["logger"])
 
-    result_create = api.create()
-    id = result_create["id"]
-    result_view = api.view(id)
+    result_create = api.create(data_input_dict)
+    charge_id = result_create["id"]
+    result_view = api.view(charge_id)
     return result_create, result_view
 
 

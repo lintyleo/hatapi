@@ -70,8 +70,9 @@ class BaseApi(object):
         :param body_key_list: 需要解析的响应正文中的 key 的列表
         :return:
         """
-        # TODO: 在业务的基类中，定义的收响应的方法
-        self.info("")
+        self.info("[%s] - 在 BaseApi 中解析响应结果，使用数据：body_key_list=%r, data_dict=%r"
+                  % (__name__, body_key_list, self.json_dict))
+
         resp = self._parse_http_resp()
         for data_Key in body_key_list:
             value = parse_json(json_dict=self.json_dict, data_key=data_Key)
@@ -80,6 +81,16 @@ class BaseApi(object):
                       % (__name__, data_Key, value))
 
         return resp
+
+    def get_config(self, data_dict: dict, data_key: str):
+        """
+        获取配置文件的值
+        :param data_dict:  配置文件字典
+        :param data_key:  配置文件路径
+        :return:
+        """
+        self.info("[%s] - 获取配置文件的值，data_dict=%r, data_key=%s " % (__name__, data_dict, data_key))
+        return parse_json(json_dict=data_dict, data_key=data_key)
 
     def _remove_none_param(self, params: dict):
         """

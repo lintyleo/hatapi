@@ -103,8 +103,8 @@ class PingxxApi(BaseApi):
                   % (__name__, uri, request_body))
 
         headers = {
-            self.get_config(config_dict=self.__config, path="SIGN/HEADER_SIGNATURE"): signature,
-            self.get_config(config_dict=self.__config, path="SIGN/HEADER_TIMESTAMP"): timestamp
+            self.get_config(data_dict=self.__config, data_key="SIGN/HEADER_SIGNATURE"): signature,
+            self.get_config(data_dict=self.__config, data_key="SIGN/HEADER_TIMESTAMP"): timestamp
         }
 
         return headers

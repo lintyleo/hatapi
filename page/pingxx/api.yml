@@ -1,0 +1,96 @@
+PingxxApi:
+  SIGN:
+    HEADER_SIGNATURE: PingPlusPlus-Signature
+    HEADER_TIMESTAMP: PingPlusPlus-Request-Timestamp
+
+ChargeApi:
+  CREATE:
+    URI: /v1/charges
+      METHOD: POST
+      PARAM:
+        APP: app
+        ORDER_NO: order_no
+        CHANNEL: channel
+        AMOUNT: amount
+        CLIENT_IP: client_ip
+        CURRENCY: currency
+        SUBJECT: subject
+        BODY: body
+        DESCRIPTION: description
+        EXTRA: extra
+      RESP:
+        DATA_KEY:
+          - id
+          - app
+          - order_no
+          - channel
+          - amount
+          - client_ip
+          - currency
+          - subject
+          - body
+          - extra
+          - description
+          - error/type
+          - error/message
+          - error/param
+          - amount_settle
+          - transaction_no
+          - refunds/object
+  VIEW:
+    URI: /v1/charges/%s
+      METHOD: GET
+      RESP:
+        DATA_KEY:
+          - id
+          - object
+          - paid
+          - app
+          - order_no
+          - channel
+          - amount
+          - client_ip
+          - currency
+          - subject
+          - body
+          - description
+  REVERSE:
+    URI: /v1/charges/%s/reverse
+      METHOD: POST
+      RESP:
+        DATA_KEY:
+          - id
+          - object
+          - livemode
+          - paid
+          - refunded
+          - reversed
+          - amount
+          - amount_settle
+          - currency
+          - subject
+          - body
+  QUERY:
+    URI: /v1/charges?%s
+      METHOD: GET
+      PARAM:
+        APP[id]: app[id]
+        LIMIT: limit
+        CHANNEL: channel
+        REFUNDED: refunded
+        REVERSED: reversed
+        PAID: paid
+        CREATED_GT: created[gt]
+        CREATED_LT: created[lt]
+        CREATED_GTE: created[gte]
+        CREATED_LTE: created[lte]
+      RESP:
+        DATA_KEY:
+          - object
+          - url
+          - has_more
+          - data
+          - error/type
+          - error/message
+          - error/param
+          - data_count

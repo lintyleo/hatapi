@@ -75,29 +75,6 @@ def read_txt(current_file_path, txt_to_current):
     return read_txt_format(txt_file)
 
 
-def read_csv(current_file_path, csv_to_current):
-    """
-    读取 Csv 文件，以便 基于 pytest 的参数化使用
-    :param csv_to_current: 当前文件通过相对路径访问 csv 所需要的路径字符串
-    :param current_file_path: 当前文件的绝对路径，请直接使用 __file__
-    :return: csv_list[dict...]
-    """
-    csv_file = PathHelper.get_actual_path_by_current_file(current_file_path, csv_to_current)
-    return CsvHelper.read_for_parametrize(csv_file)
-
-
-def read_yaml(current_file_path, yml_to_current, key_of_page):
-    """
-    读取 Yml 文件，以便 Page 子类进行使用
-    :param key_of_page:
-    :param current_file_path:
-    :param yml_to_current:
-    :return:
-    """
-    yml_file = PathHelper.get_actual_path_by_current_file(current_file_path, yml_to_current)
-    return YamlHelper.get_config_as_dict(yml_file, key_of_page)
-
-
 def read_csv(current, file_path):
     """
     读 CSV 文件，CSV 文件必须有标题

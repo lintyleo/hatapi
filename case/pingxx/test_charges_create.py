@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from base import read_csv, read_yaml
+from base import read_csv, read_yaml, read_txt
 from case import BaseTest
 from page.pingxx import biz_create_charge
 
@@ -60,6 +60,11 @@ class TestChargesCreate(BaseTest):
         """
         self.info("[%s] - 开始执行测试，使用数据：%r！ " % (__name__, data))
         # 准备数据 从 test_data 取数据
+        rsa_raw = data["RSA私钥"]
+        if rsa_raw is not None and rsa_raw == "":
+            rsa_private = read_txt(current=__file__, file_path=rsa_raw)
+        else:
+            rsa_private = None
         data_input_dict = dict(
             order_no=data["订单编号"],
             amount=data["金额"],
@@ -75,7 +80,7 @@ class TestChargesCreate(BaseTest):
             app=dict(id=data["app"]),
             client_ip=data["client_ip"],
             secret_key=data["密钥"],
-            rsa_private=data["RSA私钥"],
+            rsa_private=rsa_private,
             request=self.request,
             logger=self.logger
         )

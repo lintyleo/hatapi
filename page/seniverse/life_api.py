@@ -24,6 +24,7 @@ class LifeApi(SeniverseApi):
             self.get_config(self.__config, "SUGGEST/PARAM/LOCATION"): data_dict["location"],
             self.get_config(self.__config, "SUGGEST/PARAM/LANGUAGE"): data_dict["language"]
         }
+        req_data = self._remove_none_param(req_data)
         # 认证
         req_cookies = {}
 

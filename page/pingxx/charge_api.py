@@ -43,6 +43,7 @@ class ChargeApi(PingxxApi):
             self.get_config(self.__config, "CREATE/PARAM/DESCRIPTION"): data_dict["description"],
             self.get_config(self.__config, "CREATE/PARAM/EXTRA"): data_dict["extra"]
         }
+        req_data = self._remove_none_param(req_data)
         # 认证
         req_auth = self.auth
         req_cookies = {}
@@ -59,6 +60,11 @@ class ChargeApi(PingxxApi):
         return self.parse(body_key_list=resp_body_key_list)
 
     def view(self, charge_id: str):
+        """
+        真实的调用 GET /v1/charges/{charge_id} 接口
+        :param charge_id:
+        :return:
+        """
         # 格式化处理请求的数据
         req_uri = self.get_config(self.__config, "VIEW/URI") % charge_id
         req_method = self.get_config(self.__config, "VIEW/METHOD")
@@ -76,6 +82,11 @@ class ChargeApi(PingxxApi):
         return self.parse(body_key_list=resp_body_key_list)
 
     def query(self, data_dict: dict):
+        """
+        真实的调用 GET /v1/charges/xxxx=xxxx 接口
+        :param data_dict:
+        :return:
+        """
         # 格式化处理请求的数据
         req_uri = self.get_config(self.__config, "VIEW/URI")
         req_method = self.get_config(self.__config, "VIEW/METHOD")
@@ -91,6 +102,7 @@ class ChargeApi(PingxxApi):
             self.get_config(self.__config, "CREATE/PARAM/CREATED_GTE"): data_dict["created_gte"],
             self.get_config(self.__config, "CREATE/PARAM/CREATED_LTE"): data_dict["created_lte"]
         }
+        req_data = self._remove_none_param(req_data)
         req_uri = encode_url(url=req_uri, params=req_data)
         req_auth = self.auth
 
@@ -107,6 +119,11 @@ class ChargeApi(PingxxApi):
         return self.parse(body_key_list=resp_body_key_list)
 
     def reverse(self, charge_id):
+        """
+        真实的调用 POST /v1/charges/{charge_id}/reverse 接口
+        :param charge_id:
+        :return:
+        """
         # 格式化处理请求的数据
         # URI
         # 格式化处理请求的数据

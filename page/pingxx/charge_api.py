@@ -1,7 +1,5 @@
-from urllib.parse import urlencode
-
-from base import read_yaml
-from page.pingxx import PingxxApi
+from base import read_yaml, encode_url
+from page.pingxx.api import PingxxApi
 
 
 class ChargeApi(PingxxApi):
@@ -92,7 +90,7 @@ class ChargeApi(PingxxApi):
             self.get_config(self.__config, "CREATE/PARAM/CREATED_GTE"): data_dict["created_gte"],
             self.get_config(self.__config, "CREATE/PARAM/CREATED_LTE"): data_dict["created_lte"]
         }
-        req_uri = req_uri % urlencode(req_data)
+        req_uri = encode_url(url=req_uri, params=req_data)
         req_auth = self.auth
 
         req_cookies = {}

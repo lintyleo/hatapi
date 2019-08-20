@@ -3,29 +3,28 @@ import pytest
 
 from base import read_csv, read_yaml
 from case import BaseTest
-from page.pingxx import biz_create_charge
+from page.seniverse import biz_view_life_suggestion
 
 
-class ChargeCreateTest(BaseTest):
+class LifeSuggestionTest(BaseTest):
     """
-    标题： 在支付对象接口，使用合法有效的数据请求 创建支付的接口，创建成功
+    标题： 在生活指数接口，使用合法有效的数据请求 查询生活指数的接口，查询成功
     作者： 刘挺立
-    时间： 20190813
+    时间： 20190814
     邮件： liutingli@ascents.work
     """
     __test = dict(
-        collection=read_csv(current=__file__, file_path="charge_create_test.csv"),
-        host=read_yaml(current=__file__, file_path="../../config/env_active.yml", key="pingxx/host"),
-        title="在支付对象接口，使用合法有效的数据请求，创建支付的接口，创建成功",
+        collection=read_csv(current=__file__, file_path="test_life_suggestion.csv"),
+        host=read_yaml(current=__file__, file_path="../../config/env_active.yml", key="seniverse/host"),
+        title="在生活指数接口，使用合法有效的数据请求 查询生活指数的接口，查询成功",
         case=dict(
             url="https://dwz.cn/GUIf2ZeN"
         ),
-        feature="支付接口",
-        story="支付对象的创建",
-        tag=["api", "pingxx", "create", "valid"],
+        feature="生活接口",
+        story="生活指数的查询",
+        tag=["api", "seniverse", "create", "valid"],
         severity=allure.severity_level.CRITICAL
     )
-
     @pytest.fixture(autouse=True)
     def prepare(self):
         """
@@ -52,7 +51,7 @@ class ChargeCreateTest(BaseTest):
     @allure.testcase(url=__test["case"]["url"])
     @allure.title(__test["title"])
     @pytest.mark.parametrize("data", __test["collection"])
-    def test_charge_create(self, data):
+    def test_life_suggestion(self, data):
         """
         执行测试的具体步骤
         :param data: 通过读取 __test_data_collection 得到一条 test_data
@@ -61,35 +60,21 @@ class ChargeCreateTest(BaseTest):
         self.info("[%s] - 开始执行测试，使用数据：%r！ " % (__name__, data))
         # 准备数据 从 test_data 取数据
         data_input_dict = dict(
-            order_no=data["订单编号"],
-            amount=data["金额"],
-            channel=data["渠道"],
-            currency=data["货币"],
-            subject=data["主题"],
-            body=data["正文"],
-            description=data["描述"],
-            extra=read_yaml(
-                current=__file__,
-                file_path=data["extra"],
-                key="%s/data/extra" % data["数据编号"]),
-            app=dict(id=data["app"]),
-            ip=data["ip"],
-            secret_key=data["密钥"],
-            rsa_private=data["RSA私钥"],
+            key=data["私钥"],
+            location=data["location"],
+            language=data["language"],
             request=self.request,
             logger=self.logger
         )
 
         # 调用业务，使用上面准备的数据
         self.info("[%s] - 开始调用业务，使用数据 data_input_dict：%r！ " % (__name__, data_input_dict))
-        resp = biz_create_charge(data_input_dict)
+        resp = biz_view_life_suggestion(data_input_dict)
 
         # 对比结果，使用 test_data 取到的期望，和上一步执行得到的结果进行对比
         self.info("[%s] - 开始进行断言，使用数据 resp：%r！ " % (__name__, resp))
         assert self.assert_equal(expected=data["期望状态码"], actual=resp["status_code"])
-        assert self.assert_equal(expected=data["期望object"], actual=resp["object"])
-        assert self.assert_equal(expected=data["期望paid"], actual=resp["paid"])
-        assert self.assert_equal(expected=data["channel"], actual=resp["channel"])
-        assert self.assert_equal(expected=data["amount"], actual=resp["amount"])
+        assert self.assert_equal(expected=data["期望城市名称"], actual=resp["location/name"])
+        assert self.assert_equal(expected=data["期望国家代号"], actual=resp["location/country"])
 
         self.info("[%s] - 结束执行测试，使用数据：%r！ " % (__name__, data))

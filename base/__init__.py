@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from base.infrastructure import Logger
 
 __version__ = "2.0.2"
@@ -62,6 +64,16 @@ def build_logger(log_path):
         log_path=log_path,
         call_path=__name__
     )
+
+
+def encode_url(url: str, params: dict):
+    """
+    对 URL 进行编码
+    :param url:
+    :param params:
+    :return:
+    """
+    return url, urlencode(params)
 
 
 def read_txt(current, file_path):

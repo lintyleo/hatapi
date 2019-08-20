@@ -75,6 +75,7 @@ class ChargeCreateTest(BaseTest):
             app=dict(id=data["app"]),
             ip=data["ip"],
             secret_key=data["密钥"],
+            rsa_private=data["RSA私钥"],
             request=self.request,
             logger=self.logger
         )

@@ -1,2 +1,2 @@
-说明,数据编号,订单编号,金额,渠道,货币,主题,正文,描述,extra,app,ip,密钥,期望状态码,期望object,期望paid
-普通合法数据,cct1,abcd123456789efghijk,1002388,cb_wx_pub_qr,cny,我的主题end,我的正文end,我的描述end,charge_create_test.yml,app_HGafHSLyDm9KT0OO,192.168.3.238,sk_test_5mvfXDq9G0C8vrrrjH8aXvXH,200,charge,1
+说明,数据编号,订单编号,金额,渠道,货币,主题,正文,描述,extra,app,ip,密钥,RSA私钥,期望状态码,期望object,期望paid
+普通合法数据,cct1,abcd123456789efghijk,1002388,cb_wx_pub_qr,cny,我的主题end,我的正文end,我的描述end,charge_create_test.yml,app_HGafHSLyDm9KT0OO,192.168.3.238,sk_test_5mvfXDq9G0C8vrrrjH8aXvXH,,200,charge,1

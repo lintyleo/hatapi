@@ -56,6 +56,8 @@ class BoxRequest(object):
         :param host: 主机，支持 主机名称，IP，域名 等
         :param port: 默认为 None，整型
         """
+        disable_warnings(InsecureRequestWarning)
+
         self.__schema = schema
         self.__host = host
         self.__schema = port

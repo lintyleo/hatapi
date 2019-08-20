@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hati.iml" filepath="$PROJECT_DIR$/.idea/hati.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/hatapi.iml" filepath="$PROJECT_DIR$/.idea/hatapi.iml" />
     </modules>
   </component>
 </project>

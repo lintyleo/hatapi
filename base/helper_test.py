@@ -1,3 +1,5 @@
+__version__ = "2.0.2"
+__author__ = "ArtLinty"
 import pytest
 
 from base.helper import parse_digit

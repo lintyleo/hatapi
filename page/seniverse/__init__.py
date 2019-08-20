@@ -1,7 +1,9 @@
 from page import BaseApi
 
-
 # 以下是测试用例使用的场景
+from page.seniverse.life_api import LifeApi
+
+
 def biz_view_life_suggestion(data_input_dict):
     """
     场景：查询生活指数的场景，事实上会调用 /v3/life/suggestion.json GET 请求
@@ -18,17 +20,12 @@ def biz_view_life_suggestion(data_input_dict):
             location/name
             location/country
     """
-    # TODO: 场景方法，给测试用例使用，查询生活指数
-    return {}
-
-
-# 以下为 业务类使用的 心知天气 业务基类
-class SeniverseApi(BaseApi):
-    __api_key = None
-
-    def __init__(self, api_key):
-        self.__api_key = api_key
-
-    @property
-    def api_key(self):
-        return self.__api_key
+    api = LifeApi(api_key=data_input_dict["api_key"],
+                  request=data_input_dict["request"],
+                  logger=data_input_dict["logger"])
+    data_dict = dict(
+        location=data_input_dict["location"],
+        language=data_input_dict["language"]
+    )
+    result = api.suggest(data_dict)
+    return result

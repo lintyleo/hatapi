@@ -2,8 +2,12 @@ __version__ = "2.0.2"
 __author__ = "ArtLinty"
 
 import json
+import time
 from enum import Enum
 
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5 as SignPKCS115
 from requests import Session, Response
 from requests.auth import HTTPBasicAuth
 from urllib3 import disable_warnings
@@ -11,11 +15,11 @@ from urllib3.exceptions import InsecureRequestWarning
 
 disable_warnings(InsecureRequestWarning)
 
-__CHARACTER_COMMA = ","
-__CHARACTER_COLON = ":"
-__WAIT_SECONDS = 5
-__DEFAULT_ENCODING_UTF8 = "utf-8"
-__SUPPORT_METHOD_LIST = ["GET", "POST", "HEAD", "PUT", "DELETE"]
+_CHARACTER_COMMA = ","
+_CHARACTER_COLON = ":"
+_WAIT_SECONDS = 5
+_DEFAULT_ENCODING_UTF8 = "utf-8"
+_SUPPORT_METHOD_LIST = ["GET", "POST", "HEAD", "PUT", "DELETE"]
 
 
 class BoxRequest(object):
@@ -78,7 +82,7 @@ class BoxRequest(object):
         :param auth:
         :return:
         """
-        if method is not None and method in __SUPPORT_METHOD_LIST:
+        if method is not None and method in _SUPPORT_METHOD_LIST:
             method = method.upper().strip()
         else:
             raise TypeError(
@@ -109,6 +113,34 @@ class BoxRequest(object):
         self.__auth = None
         self.__cookies = None
         self.__response = None
+
+    @staticmethod
+    def get_sign_by_pkcs115(rsa_private_key, uri, body_params):
+        """
+        根据 私钥，时间戳，uri 和 请求，返回 规定的 headers，使用 pkcs1v15 方法
+        :param rsa_private_key: rsa 私钥
+        :param uri: URI, api_url 去掉前面的部分
+        :param body_params:  api_param
+        :return:
+        """
+
+        if body_params:
+            request_body = json.dumps(body_params).encode(_DEFAULT_ENCODING_UTF8)
+            verify_data = [request_body.decode()]
+        else:
+            verify_data = []
+        timestamp = int(time.time())
+
+        verify_data.extend([uri, repr(timestamp)])
+        rsa_data = "".join(verify_data)
+        rsa_key = RSA.importKey(rsa_private_key)
+
+        signer = SignPKCS115.new(rsa_key)
+        msg_hash = SHA256.new(rsa_data.encode(encoding=_DEFAULT_ENCODING_UTF8))
+        sign = signer.sign(msg_hash)
+
+        signature = b64encode(sign)
+        return signature, str(timestamp)
 
     """
     属性
@@ -212,7 +244,7 @@ class BoxRequest(object):
         if self.__port:
             url = "%s%s:%d%s" % (url, self.__host, self.__port, uri)
         else:
-            url = url, self.__host, uri
+            url = url + self.__host + uri
         return url
 
     def _request(self, session: Session,
@@ -252,7 +284,7 @@ class BoxRequest(object):
         """
         json_string = json.dumps(self._load_json(),
                                  indent=4,
-                                 separators=(__CHARACTER_COMMA, __CHARACTER_COLON))
+                                 separators=(_CHARACTER_COMMA, _CHARACTER_COLON))
         if json_string is not None and isinstance(json_string, str):
             return json_string.encode('utf-8').decode('unicode_escape')
 

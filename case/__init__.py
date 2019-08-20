@@ -1,3 +1,6 @@
+__version__ = "2.0.2"
+__author__ = "ArtLinty"
+
 import time
 
 import allure
@@ -67,22 +70,21 @@ class BaseTest(object):
         time.sleep(seconds)
 
     @allure.step
-    def capture(self, title: str):
+    def capture(self, title=None):
         """
         抓包 HTTP/HTTPS 请求和响应，并且记录在 allure 报告中
         :return: None
         """
+        if title is None or title == "":
+            title = self.current_timestamp
         if self.request and isinstance(self.request, BoxRequest):
-            json = self.request.json_string
+            json = self.request.json_format_string
             allure.attach(json, name="json_dict_%s" % title, attachment_type=allure.attachment_type.JSON)
 
-            request = self.dict_to_yaml(self.request.full_request)
-            allure.attach(request, name="full_request_%s" % title, attachment_type=allure.attachment_type.YAML)
-
-            response = self.dict_to_yaml(self.request.full_response)
+            response = self.dict_to_yaml(self.request.response_dict)
             allure.attach(response, name="full_response_%s" % title, attachment_type=allure.attachment_type.YAML)
 
-            self.info("[%s] - 系统进行抓包，请求：%r，响应：%r，JSON：%r " % (__name__, request, response, json))
+            self.info("[%s] - 系统进行抓包，响应：%r，JSON：%r " % (__name__, response, json))
 
     def assert_in(self, expected, actual):
         """
@@ -100,7 +102,7 @@ class BaseTest(object):
         self.info(log_msg)
         # 如果执行断言失败，就抓包
         if not result:
-            self.capture()
+            self.capture(log_msg[0: 20])
         return result
 
     def assert_equal(self, expected, actual):
@@ -128,7 +130,7 @@ class BaseTest(object):
         self.info(log_msg)
         # 如果执行断言失败，就抓包
         if not result:
-            self.capture()
+            self.capture(log_msg[0: 20])
         return result
 
     def assert_int_equal(self, expected, actual):
@@ -158,7 +160,7 @@ class BaseTest(object):
         self.info(log_msg)
         # 如果执行断言失败，就抓包
         if not result:
-            self.capture()
+            self.capture(log_msg[0: 20])
         return result
 
     def assert_decimal_equal(self, expected, actual, digits=2):
@@ -188,7 +190,7 @@ class BaseTest(object):
         self.info(log_msg)
         # 如果执行断言失败，就抓包
         if not result:
-            self.capture()
+            self.capture(log_msg[0: 20])
         return result
 
     def assert_dict_equal(self, expected, actual, data_key, index=None, sub_key=None):
@@ -214,7 +216,7 @@ class BaseTest(object):
         self.info(log_msg)
         # 如果执行断言失败，就抓包
         if not result:
-            self.capture()
+            self.capture(log_msg[0: 20])
         return result
 
     def str_to_decimal(self, digit_str, digits=None):

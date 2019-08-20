@@ -1,3 +1,6 @@
+__version__ = "2.0.2"
+__author__ = "ArtLinty"
+
 from base import BoxRequest, Logger, parse_json
 
 
@@ -82,6 +85,26 @@ class BaseApi(object):
 
         return resp
 
+    def parse_list(self, list_data_key: str, index: int, sub_data_key_list: list):
+        """
+        解析 结果中的 list 数据
+        :param list_data_key: list 所在的 key，例如 results[], 填写 results
+        :param index:  索引下标
+        :param sub_data_key_list:  列表中的每个元素的key
+        :return:
+        """
+        self.info("[%s] - 在 BaseApi 中解析响应结果的 list，使用数据：list_data_key=%s, index=%d, sub_data_key_list=%r, data_dict=%r"
+                  % (__name__, list_data_key, index, sub_data_key_list, self.json_dict))
+
+        resp = self._parse_http_resp()
+        for sub_data_key in sub_data_key_list:
+            value = parse_json(json_dict=self.json_dict, data_key=list_data_key, index=index, sub_key=sub_data_key)
+            resp[sub_data_key] = value
+            self.info("[%s] - 在 BaseApi 中解析响应的 JSON 字典成功，data_key=%s, value=%r"
+                      % (__name__, sub_data_key, value))
+
+        return resp
+
     def get_config(self, data_dict: dict, data_key: str):
         """
         获取配置文件的值
@@ -89,8 +112,21 @@ class BaseApi(object):
         :param data_key:  配置文件路径
         :return:
         """
-        self.info("[%s] - 获取配置文件的值，data_dict=%r, data_key=%s " % (__name__, data_dict, data_key))
+        self.info("[%s] - 获取配置文件的值：data_key=%s, data_dict=%r!" % (__name__, data_key, data_dict))
         return parse_json(json_dict=data_dict, data_key=data_key)
+
+    def merge_resp(self, first_resp: dict, second_resp: dict):
+        """
+        合并两个字典，作为一个字典，使用 update()
+        :param first_resp:
+        :param second_resp:
+        :return: 两个字典的并集
+        """
+        # update() 是直接更新了 first_resp 这个字典（合并了 second_resp)
+        # 注意 update() 返回值是 None，直接使用 first_resp 就可以了
+        first_resp.update(second_resp)
+        self.info("[%s] - 合并了两个字典，first=%r, second=%r" % (__name__, first_resp, second_resp))
+        return first_resp
 
     def _remove_none_param(self, params: dict):
         """
@@ -129,19 +165,6 @@ class BaseApi(object):
             resp["json_dict"] = self.request.json_dict
 
         return resp
-
-    def _merge_resp(self, first_resp: dict, second_resp: dict):
-        """
-        合并两个字典，作为一个字典，使用 update()
-        :param first_resp:
-        :param second_resp:
-        :return: 两个字典的并集
-        """
-        # update() 是直接更新了 first_resp 这个字典（合并了 second_resp)
-        # 注意 update() 返回值是 None，直接使用 first_resp 就可以了
-        first_resp.update(second_resp)
-        self.info("[%s] - 合并了两个字典，first=%r, second=%r" % (__name__, first_resp, second_resp))
-        return first_resp
 
     @property
     def request(self):

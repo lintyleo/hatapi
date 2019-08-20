@@ -1,15 +1,12 @@
-from urllib.parse import urlencode
-
-from base.infrastructure import Logger
-
 __version__ = "2.0.2"
 __author__ = "ArtLinty"
-
 """
 # Usage：
 # call build_request() for web api instance
 """
+from urllib.parse import urlencode
 
+from base.infrastructure import Logger
 from base.box import BoxRequest
 from base.helper import CsvHelper, PathHelper, DbHelper, YamlHelper, JsonHelper, read_txt_format
 

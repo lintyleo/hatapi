@@ -41,7 +41,8 @@ class ChargeApi(PingxxApi):
             self.get_config(self.__config, "CREATE/PARAM/SUBJECT"): data_dict["subject"],
             self.get_config(self.__config, "CREATE/PARAM/BODY"): data_dict["body"],
             self.get_config(self.__config, "CREATE/PARAM/DESCRIPTION"): data_dict["description"],
-            self.get_config(self.__config, "CREATE/PARAM/EXTRA"): data_dict["extra"]}
+            self.get_config(self.__config, "CREATE/PARAM/EXTRA"): data_dict["extra"]
+        }
         # 认证
         req_auth = self.auth
         req_cookies = {}

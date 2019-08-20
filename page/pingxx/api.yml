@@ -22,6 +22,8 @@ ChargeApi:
       DATA_KEY:
         - id
         - app
+        - object
+        - paid
         - order_no
         - channel
         - amount

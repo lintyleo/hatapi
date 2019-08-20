@@ -1,0 +1,65 @@
+LifeApi:
+  SUGGEST:
+    URI: /v3/life/suggestion.json
+    METHOD: GET
+    PARAM:
+      KEY: key
+      LOCATION: location
+      LANGUAGE: language
+    RESP:
+      DATA_KEY:
+        - results
+        - status
+        - status_code
+      LIST:
+        DATA_KEY: results
+        INDEX: 0
+        SUB_DATA_KEY:
+        - location
+        - suggestion
+        - last_update
+        - location/id
+        - location/name
+        - location/country
+        - location/path
+        - location/timezone
+        - location/timezone_offset
+        - suggestion/ac/brief
+        - suggestion/ac/details
+        - suggestion/air_pollution/brief
+        - suggestion/air_pollution/details
+        - suggestion/airing/brief
+        - suggestion/airing/details
+        - suggestion/allergy/brief
+        - suggestion/allergy/details
+        - suggestion/beer/brief
+        - suggestion/beer/details
+        - suggestion/boating/brief
+        - suggestion/boating/details
+        - suggestion/car_washing/brief
+        - suggestion/car_washing/details
+        - suggestion/chill/brief
+        - suggestion/chill/details
+        - suggestion/comfort/brief
+        - suggestion/comfort/details
+        - suggestion/dating/brief
+        - suggestion/dating/details
+        - suggestion/dressing/brief
+        - suggestion/dressing/details
+        - suggestion/fishing/brief
+        - suggestion/fishing/details
+        - suggestion/flu/brief
+        - suggestion/flu/details
+        - suggestion/hair_dressing/brief
+        - suggestion/hair_dressing/details
+        - suggestion/kiteflying/brief
+        - suggestion/kiteflying/details
+        - suggestion/makeup/brief
+        - suggestion/makeup/details
+        - suggestion/mood/brief
+        - suggestion/mood/details
+        - suggestion/morning_sport/brief
+        - suggestion/morning_sport/details
+        - suggestion/night_life/brief
+        - suggestion/night_life/details
+

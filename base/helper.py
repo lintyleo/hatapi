@@ -189,10 +189,9 @@ class YamlHelper(object):
         with open(file, mode='r', encoding='utf8') as file_config:
             config_dict = yaml.load(file_config.read(), Loader=yaml.FullLoader)
             if key and config_dict and isinstance(config_dict, dict):
-                if key in config_dict.keys():
-                    return config_dict[key]
+                return _get_dict_value(config_dict, key)
 
-            return config_dict
+            return None
 
     @staticmethod
     def dict_to_yaml(yaml_dict: dict):

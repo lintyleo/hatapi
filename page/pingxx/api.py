@@ -32,7 +32,7 @@ class PingxxApi(BaseApi):
                 - PingPlusPlus-Signature
                 - PingPlusPlus-Request-Timestamp
         """
-        if self.__rsa_private is None:
+        if self.__rsa_private is None or self.__rsa_private == "":
             return {}
         signature, timestamp = self.request.get_sign_by_pkcs115(
             rsa_private_key=self.__rsa_private,

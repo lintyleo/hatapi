@@ -6,7 +6,7 @@ echo [step 0] - initialize report parameters
 set reruns=3
 set test_target=..\case\seniverse\test_life_suggest.py
 set allure_target=..\report\allure\target\
-set allure_report=c:\xampp\htdocs\allureport\api\seniverse\liutingli\
+set allure_report=c:\xampp\htdocs\allureport\liutingli\
 
 echo [step 1] - remove all documents in allure report root
 REM del /a /f /q %allure_report%

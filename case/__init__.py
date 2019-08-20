@@ -69,6 +69,15 @@ class BaseTest(object):
         self.info("[%s] - 系统等待执行 %d 秒" % (__name__, seconds))
         time.sleep(seconds)
 
+    def close_request(self):
+        """
+        关闭请求
+        :return:
+        """
+        self.info("[%s] - 系统关闭请求！")
+        if self.request is not None and isinstance(self.request, BoxRequest):
+            self.request.close()
+
     @allure.step
     def capture(self, title=None):
         """

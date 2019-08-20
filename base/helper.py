@@ -74,8 +74,8 @@ class CsvHelper(object):
                 row_dict = {}
                 for key in row.keys():
                     value = row.get(key)
-                    # 如果在 csv 中写的字符串是变成小写以后 是 "none", 就认定要给参数传递 None 值
-                    if isinstance(value, str) and value.lower() == "none":
+                    # 如果在 csv 中写的字符串是变成小写以后 是 "null", 就认定要给参数传递 None 值
+                    if isinstance(value, str) and value.lower() == "null":
                         row_dict[key] = None
                     else:
                         row_dict[key] = parse_digit(row.get(key))

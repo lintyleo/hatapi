@@ -28,9 +28,9 @@ class PathHelper(object):
         :param file_path: 被访问文件与当前文件的相对路径
         :return: 路径
         """
-        file_path = os.path.dirname(current)
-        file_path = _parse_file_name(file_path)
-        abspath = os.path.abspath(os.path.join(file_path, file_path))
+        current_file_path = os.path.dirname(current)
+        name_file_path = _parse_file_name(file_path)
+        abspath = os.path.abspath(os.path.join(current_file_path, name_file_path))
         return abspath
 
     @staticmethod
@@ -456,4 +456,3 @@ def _get_dict_value(json_dict, data_key):
                 break
 
     return json_dict
-

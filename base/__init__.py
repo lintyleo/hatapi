@@ -64,14 +64,14 @@ def build_logger(log_path):
     )
 
 
-def read_txt(current_file_path, txt_to_current):
+def read_txt(current, file_path):
     """
     读纯文本文件
-    :param current_file_path:
-    :param txt_to_current:
+    :param current:
+    :param file_path:
     :return:
     """
-    txt_file = PathHelper.get_actual_path_by_current_file(current_file_path, txt_to_current)
+    txt_file = PathHelper.get_actual_path_by_current_file(current, file_path)
     return read_txt_format(txt_file)
 
 

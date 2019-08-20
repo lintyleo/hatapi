@@ -26,9 +26,8 @@ def biz_create_charge(data_input_dict: dict):
         status_code
         接口的默认首层返回值
     """
-    # TODO: 场景方法，给测试用例使用，创建支付
     api = ChargeApi(secret_key=data_input_dict["secret_key"],
-                    rsa_private=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["rsa_private"],
                     request=data_input_dict["request"],
                     logger=data_input_dict["logger"]
                     )
@@ -40,7 +39,7 @@ def biz_create_charge(data_input_dict: dict):
 
 def biz_view_charge(data_input_dict: dict):
     api = ChargeApi(secret_key=data_input_dict["secret_key"],
-                    rsa_private=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["rsa_private"],
                     request=data_input_dict["request"],
                     logger=data_input_dict["logger"])
     result = api.view(data_input_dict["charge_id"])
@@ -49,7 +48,7 @@ def biz_view_charge(data_input_dict: dict):
 
 def biz_reverse_charge(data_input_dict: dict):
     api = ChargeApi(secret_key=data_input_dict["secret_key"],
-                    rsa_private=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["rsa_private"],
                     request=data_input_dict["request"],
                     logger=data_input_dict["logger"])
     result = api.reverse(data_input_dict["charge_id"])
@@ -58,7 +57,7 @@ def biz_reverse_charge(data_input_dict: dict):
 
 def biz_query_charge(data_input_dict: dict):
     api = ChargeApi(secret_key=data_input_dict["secret_key"],
-                    rsa_private=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["rsa_private"],
                     request=data_input_dict["request"],
                     logger=data_input_dict["logger"])
     result = api.query(data_input_dict)
@@ -67,7 +66,7 @@ def biz_query_charge(data_input_dict: dict):
 
 def biz_create_and_view_charge(data_input_dict: dict):
     api = ChargeApi(secret_key=data_input_dict["secret_key"],
-                    rsa_private=data_input_dict["secret_key"],
+                    rsa_private=data_input_dict["rsa_private"],
                     request=data_input_dict["request"],
                     logger=data_input_dict["logger"])
 

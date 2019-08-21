@@ -28,14 +28,14 @@ class BaseApi(object):
         if self.logger is not None and isinstance(self.logger, Logger):
             self.logger.info(msg)
 
-    def send(self, uri: str,
-             method: str,
-             data_dict=None,
-             auth=None,
-             cookies=None,
-             headers=None,
-             files=None,
-             is_json_content=True):
+    def _send(self, uri: str,
+              method: str,
+              data_dict=None,
+              auth=None,
+              cookies=None,
+              headers=None,
+              files=None,
+              is_json_content=True):
         """
         发送 HTTP/HTTPS 请求
         :param uri: 请求网址的路径部分（去掉协议，主机和端口）
@@ -67,7 +67,7 @@ class BaseApi(object):
                 is_json_content=is_json_content
             )
 
-    def parse(self, body_key_list=None):
+    def _parse(self, body_key_list=None):
         """
         解析 send 的结果
         :param body_key_list: 需要解析的响应正文中的 key 的列表
@@ -85,7 +85,7 @@ class BaseApi(object):
 
         return resp
 
-    def parse_list(self, list_data_key: str, index: int, sub_data_key_list: list):
+    def _parse_list(self, list_data_key: str, index: int, sub_data_key_list: list):
         """
         解析 结果中的 list 数据
         :param list_data_key: list 所在的 key，例如 results[], 填写 results
@@ -105,7 +105,7 @@ class BaseApi(object):
 
         return resp
 
-    def get_config(self, data_dict: dict, data_key: str):
+    def _get_config(self, data_dict: dict, data_key: str):
         """
         获取配置文件的值
         :param data_dict:  配置文件字典
@@ -115,7 +115,7 @@ class BaseApi(object):
         self.info("[%s] - 获取配置文件的值：data_key=%s, data_dict=%r!" % (__name__, data_key, data_dict))
         return parse_json(json_dict=data_dict, data_key=data_key)
 
-    def merge_resp(self, first_resp: dict, second_resp: dict):
+    def _merge_resp(self, first_resp: dict, second_resp: dict):
         """
         合并两个字典，作为一个字典，使用 update()
         :param first_resp:

@@ -29,19 +29,19 @@ class ChargeApi(PingxxApi):
         """
         # 格式化处理请求的数据
         # URI
-        req_uri = self.get_config(self.__config, "CREATE/URI")
-        req_method = self.get_config(self.__config, "CREATE/METHOD")
+        req_uri = self._get_config(self.__config, "CREATE/URI")
+        req_method = self._get_config(self.__config, "CREATE/METHOD")
         req_data = {
-            self.get_config(self.__config, "CREATE/PARAM/APP"): data_dict["app"],
-            self.get_config(self.__config, "CREATE/PARAM/ORDER_NO"): data_dict["order_no"],
-            self.get_config(self.__config, "CREATE/PARAM/CHANNEL"): data_dict["channel"],
-            self.get_config(self.__config, "CREATE/PARAM/AMOUNT"): data_dict["amount"],
-            self.get_config(self.__config, "CREATE/PARAM/CLIENT_IP"): data_dict["client_ip"],
-            self.get_config(self.__config, "CREATE/PARAM/CURRENCY"): data_dict["currency"],
-            self.get_config(self.__config, "CREATE/PARAM/SUBJECT"): data_dict["subject"],
-            self.get_config(self.__config, "CREATE/PARAM/BODY"): data_dict["body"],
-            self.get_config(self.__config, "CREATE/PARAM/DESCRIPTION"): data_dict["description"],
-            self.get_config(self.__config, "CREATE/PARAM/EXTRA"): data_dict["extra"]
+            self._get_config(self.__config, "CREATE/PARAM/APP"): data_dict["app"],
+            self._get_config(self.__config, "CREATE/PARAM/ORDER_NO"): data_dict["order_no"],
+            self._get_config(self.__config, "CREATE/PARAM/CHANNEL"): data_dict["channel"],
+            self._get_config(self.__config, "CREATE/PARAM/AMOUNT"): data_dict["amount"],
+            self._get_config(self.__config, "CREATE/PARAM/CLIENT_IP"): data_dict["client_ip"],
+            self._get_config(self.__config, "CREATE/PARAM/CURRENCY"): data_dict["currency"],
+            self._get_config(self.__config, "CREATE/PARAM/SUBJECT"): data_dict["subject"],
+            self._get_config(self.__config, "CREATE/PARAM/BODY"): data_dict["body"],
+            self._get_config(self.__config, "CREATE/PARAM/DESCRIPTION"): data_dict["description"],
+            self._get_config(self.__config, "CREATE/PARAM/EXTRA"): data_dict["extra"]
         }
         req_data = self._remove_none_param(req_data)
         # 认证
@@ -49,15 +49,15 @@ class ChargeApi(PingxxApi):
         req_cookies = {}
         req_headers = self._get_headers_for_signature(uri=req_uri, request_body=req_data)
         # 真正的发请求
-        self.send(uri=req_uri,
-                  method=req_method,
-                  data_dict=req_data,
-                  auth=req_auth,
-                  cookies=req_cookies,
-                  headers=req_headers)
+        self._send(uri=req_uri,
+                   method=req_method,
+                   data_dict=req_data,
+                   auth=req_auth,
+                   cookies=req_cookies,
+                   headers=req_headers)
         # 返回响应的结果
-        resp_body_key_list = self.get_config(self.__config, "CREATE/RESP/DATA_KEY")
-        return self.parse(body_key_list=resp_body_key_list)
+        resp_body_key_list = self._get_config(self.__config, "CREATE/RESP/DATA_KEY")
+        return self._parse(body_key_list=resp_body_key_list)
 
     def view(self, charge_id: str):
         """
@@ -66,20 +66,20 @@ class ChargeApi(PingxxApi):
         :return:
         """
         # 格式化处理请求的数据
-        req_uri = self.get_config(self.__config, "VIEW/URI") % charge_id
-        req_method = self.get_config(self.__config, "VIEW/METHOD")
+        req_uri = self._get_config(self.__config, "VIEW/URI") % charge_id
+        req_method = self._get_config(self.__config, "VIEW/METHOD")
         req_auth = self.auth
         req_cookies = {}
         req_headers = self._get_headers_for_signature(uri=req_uri)
 
         # 真正的发请求
-        self.send(uri=req_uri,
-                  method=req_method,
-                  auth=req_auth,
-                  cookies=req_cookies,
-                  headers=req_headers)
-        resp_body_key_list = self.get_config(self.__config, "VIEW/RESP/DATA_KEY")
-        return self.parse(body_key_list=resp_body_key_list)
+        self._send(uri=req_uri,
+                   method=req_method,
+                   auth=req_auth,
+                   cookies=req_cookies,
+                   headers=req_headers)
+        resp_body_key_list = self._get_config(self.__config, "VIEW/RESP/DATA_KEY")
+        return self._parse(body_key_list=resp_body_key_list)
 
     def query(self, data_dict: dict):
         """
@@ -88,19 +88,19 @@ class ChargeApi(PingxxApi):
         :return:
         """
         # 格式化处理请求的数据
-        req_uri = self.get_config(self.__config, "VIEW/URI")
-        req_method = self.get_config(self.__config, "VIEW/METHOD")
+        req_uri = self._get_config(self.__config, "VIEW/URI")
+        req_method = self._get_config(self.__config, "VIEW/METHOD")
         req_data = {
-            self.get_config(self.__config, "CREATE/PARAM/APP[id]"): data_dict["app"],
-            self.get_config(self.__config, "CREATE/PARAM/LIMIT"): data_dict["limit"],
-            self.get_config(self.__config, "CREATE/PARAM/CHANNEL"): data_dict["channel"],
-            self.get_config(self.__config, "CREATE/PARAM/REFUNDED"): data_dict["refunded"],
-            self.get_config(self.__config, "CREATE/PARAM/REVERSED"): data_dict["reversed"],
-            self.get_config(self.__config, "CREATE/PARAM/PAID"): data_dict["paid"],
-            self.get_config(self.__config, "CREATE/PARAM/CREATED_GT"): data_dict["created_gt"],
-            self.get_config(self.__config, "CREATE/PARAM/CREATED_LT"): data_dict["created_lt"],
-            self.get_config(self.__config, "CREATE/PARAM/CREATED_GTE"): data_dict["created_gte"],
-            self.get_config(self.__config, "CREATE/PARAM/CREATED_LTE"): data_dict["created_lte"]
+            self._get_config(self.__config, "CREATE/PARAM/APP[id]"): data_dict["app"],
+            self._get_config(self.__config, "CREATE/PARAM/LIMIT"): data_dict["limit"],
+            self._get_config(self.__config, "CREATE/PARAM/CHANNEL"): data_dict["channel"],
+            self._get_config(self.__config, "CREATE/PARAM/REFUNDED"): data_dict["refunded"],
+            self._get_config(self.__config, "CREATE/PARAM/REVERSED"): data_dict["reversed"],
+            self._get_config(self.__config, "CREATE/PARAM/PAID"): data_dict["paid"],
+            self._get_config(self.__config, "CREATE/PARAM/CREATED_GT"): data_dict["created_gt"],
+            self._get_config(self.__config, "CREATE/PARAM/CREATED_LT"): data_dict["created_lt"],
+            self._get_config(self.__config, "CREATE/PARAM/CREATED_GTE"): data_dict["created_gte"],
+            self._get_config(self.__config, "CREATE/PARAM/CREATED_LTE"): data_dict["created_lte"]
         }
         req_data = self._remove_none_param(req_data)
         req_uri = encode_url(url=req_uri, params=req_data)
@@ -110,13 +110,13 @@ class ChargeApi(PingxxApi):
         req_headers = self._get_headers_for_signature(uri=req_uri)
 
         # 真正的发请求
-        self.send(uri=req_uri,
-                  method=req_method,
-                  auth=req_auth,
-                  cookies=req_cookies,
-                  headers=req_headers)
-        resp_body_key_list = self.get_config(self.__config, "VIEW/RESP/DATA_KEY")
-        return self.parse(body_key_list=resp_body_key_list)
+        self._send(uri=req_uri,
+                   method=req_method,
+                   auth=req_auth,
+                   cookies=req_cookies,
+                   headers=req_headers)
+        resp_body_key_list = self._get_config(self.__config, "VIEW/RESP/DATA_KEY")
+        return self._parse(body_key_list=resp_body_key_list)
 
     def reverse(self, charge_id):
         """
@@ -127,17 +127,17 @@ class ChargeApi(PingxxApi):
         # 格式化处理请求的数据
         # URI
         # 格式化处理请求的数据
-        req_uri = self.get_config(self.__config, "REVERSE/URI") % charge_id
-        req_method = self.get_config(self.__config, "REVERSE/METHOD")
+        req_uri = self._get_config(self.__config, "REVERSE/URI") % charge_id
+        req_method = self._get_config(self.__config, "REVERSE/METHOD")
         req_auth = self.auth
         req_cookies = {}
         req_headers = self._get_headers_for_signature(uri=req_uri)
 
         # 真正的发请求
-        self.send(uri=req_uri,
-                  method=req_method,
-                  auth=req_auth,
-                  cookies=req_cookies,
-                  headers=req_headers)
-        resp_body_key_list = self.get_config(self.__config, "REVERSE/RESP/DATA_KEY")
-        return self.parse(body_key_list=resp_body_key_list)
+        self._send(uri=req_uri,
+                   method=req_method,
+                   auth=req_auth,
+                   cookies=req_cookies,
+                   headers=req_headers)
+        resp_body_key_list = self._get_config(self.__config, "REVERSE/RESP/DATA_KEY")
+        return self._parse(body_key_list=resp_body_key_list)

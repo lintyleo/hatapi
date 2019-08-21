@@ -61,7 +61,7 @@ class TestChargesCreate(BaseTest):
         self.info("[%s] - 开始执行测试，使用数据：%r！ " % (__name__, data))
         # 准备数据 从 test_data 取数据
         rsa_raw = data["RSA私钥"]
-        if rsa_raw is not None and rsa_raw == "":
+        if rsa_raw is not None and rsa_raw != "":
             rsa_private = read_txt(current=__file__, file_path=rsa_raw)
         else:
             rsa_private = None

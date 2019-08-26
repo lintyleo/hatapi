@@ -17,12 +17,12 @@ class LifeApi(SeniverseApi):
         :param data_dict:
         :return:
         """
-        req_uri = self._get_config(self.__config, "SUGGEST/URI")
-        req_method = self._get_config(self.__config, "SUGGEST/METHOD")
+        req_uri = self._get_config(self.__config, "SUGGEST.URI")
+        req_method = self._get_config(self.__config, "SUGGEST.METHOD")
         req_data = {
-            self._get_config(self.__config, "SUGGEST/PARAM/KEY"): self.api_key,
-            self._get_config(self.__config, "SUGGEST/PARAM/LOCATION"): data_dict["location"],
-            self._get_config(self.__config, "SUGGEST/PARAM/LANGUAGE"): data_dict["language"]
+            self._get_config(self.__config, "SUGGEST.PARAM.KEY"): self.api_key,
+            self._get_config(self.__config, "SUGGEST.PARAM.LOCATION"): data_dict.get("location"),
+            self._get_config(self.__config, "SUGGEST.PARAM.LANGUAGE"): data_dict.get("language")
         }
         req_data = self._remove_none_param(req_data)
         # 认证
@@ -35,13 +35,13 @@ class LifeApi(SeniverseApi):
                    cookies=req_cookies
                    )
         # 返回响应的结果
-        resp_body_key_list = self._get_config(self.__config, "SUGGEST/RESP/DATA_KEY")
+        resp_body_key_list = self._get_config(self.__config, "SUGGEST.RESP.DATA_KEY")
         resp = self._parse(body_key_list=resp_body_key_list)
 
         # 处理 list
-        list_data_key = self._get_config(self.__config, "SUGGEST/RESP/LIST/DATA_KEY")
-        index = self._get_config(self.__config, "SUGGEST/RESP/LIST/INDEX")
-        sub_data_key_list = self._get_config(self.__config, "SUGGEST/RESP/LIST/SUB_DATA_KEY")
+        list_data_key = self._get_config(self.__config, "SUGGEST.RESP.LIST.DATA_KEY")
+        index = self._get_config(self.__config, "SUGGEST.RESP.LIST.INDEX")
+        sub_data_key_list = self._get_config(self.__config, "SUGGEST.RESP.LIST.SUB_DATA_KEY")
         list_resp = self._parse_list(list_data_key=list_data_key,
                                      index=index, sub_data_key_list=sub_data_key_list)
         return self._merge_resp(resp, list_resp)

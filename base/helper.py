@@ -11,6 +11,7 @@ import yaml
 _DEFAULT_ENCODING_UTF8 = "utf-8"
 _CHARACTER_COMMA = ","
 _CHARACTER_SLASH = "/"
+_CHARACTER_DOT = "."
 _LEVEL_FROM_PROJECT_ROOT = "../"
 
 
@@ -206,10 +207,10 @@ class YamlHelper(object):
         return yaml.dump(yaml_dict)
 
 
-class JsonHelper(object):
+class DictHelper(object):
 
     @staticmethod
-    def parse_json_dict_value(json_dict, data_key, index=None, sub_key=None):
+    def parse_dict_value(json_dict, data_key, index=None, sub_key=None):
         """
         get json dict value
         :param json_dict:
@@ -427,34 +428,34 @@ def _parse_file_name(filename):
     :return:
     """
     if filename is not None and isinstance(filename, str) and len(filename) > 0:
-        filename = filename.replace("\\", "/")
+        filename = filename.replace("\\", _CHARACTER_SLASH)
 
-        if filename[0] == "/":
+        if filename[0] == _CHARACTER_SLASH:
             filename = ".%s" % filename
 
     return filename
 
 
-def _get_dict_value(json_dict, data_key):
+def _get_dict_value(dict_data, data_key):
     """
     parse dict value
-    :param json_dict:
+    :param dict_data:
     :param data_key:
     :return:
     """
     keys = []
-    if _CHARACTER_SLASH in data_key:
-        keys = data_key.split(_CHARACTER_SLASH)
+    if _CHARACTER_DOT in data_key:
+        keys = data_key.split(_CHARACTER_DOT)
     else:
         keys.append(data_key.strip())
 
-    if isinstance(json_dict, dict):
+    if isinstance(dict_data, dict):
         for k in keys:
             k = k.strip()
-            if k in json_dict.keys():
-                json_dict = json_dict[k]
+            if k in dict_data.keys():
+                dict_data = dict_data[k]
             else:
-                json_dict = None
+                dict_data = None
                 break
 
-    return json_dict
+    return dict_data

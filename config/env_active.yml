@@ -1,5 +1,7 @@
 pingxx:
+  schema: https
   host: api.pingxx.com
 
 seniverse:
+  schema: https
   host: api.seniverse.com

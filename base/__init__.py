@@ -6,9 +6,9 @@ __author__ = "ArtLinty"
 """
 from urllib.parse import urlencode
 
-from base.infrastructure import Logger
 from base.box import BoxRequest
-from base.helper import CsvHelper, PathHelper, DbHelper, YamlHelper, JsonHelper, read_txt_format
+from base.helper import CsvHelper, PathHelper, DbHelper, YamlHelper, DictHelper, read_txt_format
+from base.infrastructure import Logger
 
 """
 main portal, for web browser driver
@@ -115,26 +115,22 @@ def read_json(current_file_path, json_to_current):
     :return:
     """
     json_file = PathHelper.get_actual_path_by_current_file(current_file_path, json_to_current)
-    return JsonHelper.read_json_file_as_dict(json_file)
+    return DictHelper.read_json_file_as_dict(json_file)
 
 
-def parse_json(json_dict: dict, data_key, index=None, sub_key=None):
+def parse_dict(dict_data: dict, data_key, index=None, sub_key=None):
     """
     解析 JSON
-    :param json_dict: 被解析的 JSON 的字典格式
-    :param data_key:
+    :param dict_data: 被解析的 JSON 的字典格式
+    :param data_key: 请用 "." 隔开路径
     :param index:
     :param sub_key:
     :return:
     """
-    if json_dict and isinstance(json_dict, dict):
-        return JsonHelper.parse_json_dict_value(
-            json_dict=json_dict,
-            data_key=data_key,
-            index=index,
-            sub_key=sub_key
-        )
-    raise TypeError(
-        "请先抓包 HTTP，传递一个 json 转换的 dict 类型，作为 json_dict 来使用 parse_json(), 当前使用的 json_dict = %r"
-        % json_dict
+
+    return DictHelper.parse_dict_value(
+        json_dict=dict_data,
+        data_key=data_key,
+        index=index,
+        sub_key=sub_key
     )

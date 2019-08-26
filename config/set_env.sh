@@ -6,4 +6,4 @@
 env_detail=$1
 # shellcheck disable=SC2154
 echo "[step 1] copy $env_detal as active environment file"
-xcopy /R /Y "env_$env_detal.yml" env_active.yml
+cp -r "env_$env_detal.yml" env_active.yml

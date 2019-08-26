@@ -36,7 +36,7 @@ class TestChargesCreate(BaseTest):
         # 准备日志文件，就可以记录整个测试
         self.init_logger(__name__)
         # 准备请求对象，就可以传递请求给业务，也可以对请求进行抓包截图
-        self.init_request(schema="HTTPS", host=self.__test["host"])
+        self.init_request(schema="HTTPS", host=self.__test.get("host"))
         # 是 yield 关键字，代表执行 test_ 开头的方法的具体内容
         self.info("[%s] - 完成测试的前置条件 set_up！ " % __name__)
         yield
@@ -45,13 +45,13 @@ class TestChargesCreate(BaseTest):
         self.wait()
         self.info("[%s] - 完成测试的清理操作 tear_down！ " % __name__)
 
-    @allure.feature(__test["feature"])
-    @allure.story(__test["story"])
-    @allure.tag(*__test["tag"])
-    @allure.severity(__test["severity"])
-    @allure.testcase(url=__test["case"]["url"])
-    @allure.title(__test["title"])
-    @pytest.mark.parametrize("data", __test["collection"])
+    @allure.feature(__test.get("feature"))
+    @allure.story(__test.get("story"))
+    @allure.tag(*__test.get("tag"))
+    @allure.severity(__test.get("severity"))
+    @allure.testcase(url=__test.get("case"))
+    @allure.title(__test.get("title"))
+    @pytest.mark.parametrize("data", __test.get("collection"))
     def test_charges_create(self, data):
         """
         执行测试的具体步骤
@@ -60,26 +60,32 @@ class TestChargesCreate(BaseTest):
         """
         self.info("[%s] - 开始执行测试，使用数据：%r！ " % (__name__, data))
         # 准备数据 从 test_data 取数据
-        rsa_raw = data["RSA私钥"]
+        rsa_raw = data.get("RSA私钥")
         if rsa_raw is not None and rsa_raw != "":
             rsa_private = read_txt(current=__file__, file_path=rsa_raw)
         else:
             rsa_private = None
+
+        extra_raw = data.get("extra")
+        if extra_raw is not None and extra_raw != "":
+            extra_value = read_yaml(current=__file__,
+                                    file_path=extra_raw,
+                                    key="%s/data/extra" % data.get("数据编号"))
+        else:
+            extra_value = None
+
         data_input_dict = dict(
-            order_no=data["订单编号"],
-            amount=data["金额"],
-            channel=data["渠道"],
-            currency=data["货币"],
-            subject=data["主题"],
-            body=data["正文"],
-            description=data["描述"],
-            extra=read_yaml(
-                current=__file__,
-                file_path=data["extra"],
-                key="%s/data/extra" % data["数据编号"]),
-            app=dict(id=data["app"]),
-            client_ip=data["client_ip"],
-            secret_key=data["密钥"],
+            order_no=data.get("订单编号"),
+            amount=data.get("金额"),
+            channel=data.get("渠道"),
+            currency=data.get("货币"),
+            subject=data.get("主题"),
+            body=data.get("正文"),
+            description=data.get("描述"),
+            extra=extra_value,
+            app=dict(id=data.get("app")),
+            client_ip=data.get("client_ip"),
+            secret_key=data.get("密钥"),
             rsa_private=rsa_private,
             request=self.request,
             logger=self.logger
@@ -91,10 +97,10 @@ class TestChargesCreate(BaseTest):
 
         # 对比结果，使用 test_data 取到的期望，和上一步执行得到的结果进行对比
         self.info("[%s] - 开始进行断言，使用数据 resp：%r！ " % (__name__, resp))
-        assert self.assert_equal(expected=data["期望状态码"], actual=resp["status_code"])
-        assert self.assert_equal(expected=data["期望object"], actual=resp["object"])
-        assert self.assert_equal(expected=bool(data["期望paid"]), actual=resp["paid"])
-        assert self.assert_equal(expected=data["渠道"], actual=resp["channel"])
-        assert self.assert_equal(expected=data["金额"], actual=resp["amount"])
+        assert self.assert_equal(expected=data.get("期望状态码"), actual=resp.get("status_code"))
+        assert self.assert_equal(expected=data.get("期望object"), actual=resp.get("object"))
+        assert self.assert_equal(expected=bool(data.get("期望paid")), actual=resp.get("paid"))
+        assert self.assert_equal(expected=data.get("渠道"), actual=resp.get("channel"))
+        assert self.assert_equal(expected=data.get("金额"), actual=resp.get("amount"))
 
         self.info("[%s] - 结束执行测试，使用数据：%r！ " % (__name__, data))

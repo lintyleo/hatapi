@@ -5,7 +5,7 @@ import time
 
 import allure
 
-from base import build_request, build_logger, BoxRequest, PathHelper, Logger, YamlHelper, JsonHelper, parse_json
+from base import build_request, build_logger, BoxRequest, PathHelper, Logger, YamlHelper, DictHelper, parse_dict
 from base.helper import parse_digit
 
 
@@ -213,8 +213,8 @@ class BaseTest(object):
         :return:
         """
         result = False
-        expected_value = parse_json(expected, data_key, index, sub_key)
-        actual_value = parse_json(actual, data_key, index, sub_key)
+        expected_value = parse_dict(expected, data_key, index, sub_key)
+        actual_value = parse_dict(actual, data_key, index, sub_key)
 
         if expected_value is not None and actual_value is not None:
             result = expected_value == actual_value
@@ -259,7 +259,7 @@ class BaseTest(object):
         """
         self.info("[system] - [%s] json_to_dict: %s" % (__name__, json_str_to_convert))
         if json_str_to_convert is not None and isinstance(json_str_to_convert, str):
-            return JsonHelper.convert_json_str_to_dict(json_str_to_convert)
+            return DictHelper.convert_json_str_to_dict(json_str_to_convert)
 
         return None
 

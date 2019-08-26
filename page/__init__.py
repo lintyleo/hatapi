@@ -1,7 +1,7 @@
 __version__ = "2.0.2"
 __author__ = "ArtLinty"
 
-from base import BoxRequest, Logger, parse_json
+from base import BoxRequest, Logger, parse_dict
 
 
 class BaseApi(object):
@@ -78,7 +78,7 @@ class BaseApi(object):
 
         resp = self._parse_http_resp()
         for data_Key in body_key_list:
-            value = parse_json(json_dict=self.json_dict, data_key=data_Key)
+            value = parse_dict(dict_data=self.json_dict, data_key=data_Key)
             resp[data_Key] = value
             self.info("[%s] - 解析响应的 JSON 字典成功，data_key=%s, value=%r"
                       % (__name__, data_Key, value))
@@ -98,7 +98,7 @@ class BaseApi(object):
 
         resp = self._parse_http_resp()
         for sub_data_key in sub_data_key_list:
-            value = parse_json(json_dict=self.json_dict, data_key=list_data_key, index=index, sub_key=sub_data_key)
+            value = parse_dict(dict_data=self.json_dict, data_key=list_data_key, index=index, sub_key=sub_data_key)
             resp[sub_data_key] = value
             self.info("[%s] - 在 BaseApi 中解析响应的 JSON 字典成功，data_key=%s, value=%r"
                       % (__name__, sub_data_key, value))
@@ -113,7 +113,7 @@ class BaseApi(object):
         :return:
         """
         self.info("[%s] - 获取配置文件的值：data_key=%s, data_dict=%r!" % (__name__, data_key, data_dict))
-        return parse_json(json_dict=data_dict, data_key=data_key)
+        return parse_dict(dict_data=data_dict, data_key=data_key)
 
     def _merge_resp(self, first_resp: dict, second_resp: dict):
         """

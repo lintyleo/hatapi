@@ -4,7 +4,7 @@ from page import BaseApi
 from page.seniverse.life_api import LifeApi
 
 
-def biz_view_life_suggestion(data_input_dict):
+def biz_view_life_suggestion(data_input_dict: dict):
     """
     场景：查询生活指数的场景，事实上会调用 /v3/life/suggestion.json GET 请求
     :param data_input_dict: 字典，key 的列表至少包含

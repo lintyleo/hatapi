@@ -33,12 +33,12 @@ ChargeApi:
         - body
         - extra
         - description
-        - error/type
-        - error/message
-        - error/param
+        - error.type
+        - error.message
+        - error.param
         - amount_settle
         - transaction_no
-        - refunds/object
+        - refunds.object
   VIEW:
     URI: /v1/charges/%s
     METHOD: GET
@@ -92,7 +92,7 @@ ChargeApi:
         - url
         - has_more
         - data
-        - error/type
-        - error/message
-        - error/param
+        - error.type
+        - error.message
+        - error.param
         - data_count

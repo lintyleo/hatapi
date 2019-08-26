@@ -20,7 +20,7 @@ class TestLifeSuggest(BaseTest):
         case="https://dwz.cn/GUIf2ZeN",
         feature="生活接口",
         story="生活指数的查询",
-        tag=("api", "seniverse", "create", "valid"),
+        tag=("api", "seniverse", "view", "valid"),
         severity=allure.severity_level.CRITICAL
     )
 

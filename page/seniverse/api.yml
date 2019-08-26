@@ -63,3 +63,42 @@ LifeApi:
         - suggestion.night_life.brief
         - suggestion.night_life.details
 
+WeatherApi:
+  NOW:
+     URI: /v3/weather/now.json
+     METHOD: GET
+     PARAM:
+        KEY: key
+        LOCATION: location
+        LANGUAGE: language
+        UNIT: unit
+     RESP:
+       DATA_KEY:
+         - results
+         - status
+         - status_code
+       LIST:
+         DATA_KEY: results
+         INDEX: 0
+         SUB_DATA_KEY:
+         - location
+         - suggestion
+         - last_update
+         - location.id
+         - location.name
+         - location.country
+         - location.path
+         - location.timezone
+         - location.timezone_offset
+         - now.text
+         - now.code
+         - now.temperature
+         - now.feels_like
+         - now.pressure
+         - now.visibility
+         - now.wind_direction
+         - now.wind_direction_degree
+         - now.wind_speed
+         - now.wind_scale
+         - now.clouds
+         - now.dew_point

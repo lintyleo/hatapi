@@ -5,6 +5,7 @@ import json
 import time
 from enum import Enum
 
+from base64 import b64encode
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5 as SignPKCS115

@@ -74,7 +74,7 @@ class BaseTest(object):
         关闭请求
         :return:
         """
-        self.info("[%s] - 系统关闭请求！")
+        self.info("[%s] - 系统关闭请求！" % __name__)
         if self.request is not None and isinstance(self.request, BoxRequest):
             self.request.close()
 

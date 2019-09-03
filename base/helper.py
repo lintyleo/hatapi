@@ -1,3 +1,6 @@
+import random
+import string
+
 __version__ = "2.0.2"
 __author__ = "ArtLinty"
 
@@ -459,3 +462,22 @@ def _get_dict_value(dict_data, data_key):
                 break
 
     return dict_data
+
+
+def str_random(digits=True, lower=True, upper=True, punctuation=False, length=20):
+    """
+    生成指定长度的随机字符串，只包含大小写和数字
+    :param length:
+    :return:
+    """
+    all_char = ""
+    if digits:
+        all_char += string.digits
+    if lower:
+        all_char += string.ascii_lowercase
+    if upper:
+        all_char += string.ascii_uppercase
+    if punctuation:
+        all_char += string.punctuation
+
+    return "".join(random.choice(all_char) for _ in range(length))

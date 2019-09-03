@@ -134,3 +134,48 @@ def parse_dict(dict_data: dict, data_key, index=None, sub_key=None):
         index=index,
         sub_key=sub_key
     )
+
+
+def random_string(length: int):
+    """
+    随机指定长度的字符串，包含大小写，数字，不包含特殊符号
+    :param length: 长度
+    :return: str
+    """
+    return helper.str_random(length=length)
+
+
+def random_string_letters(length: int):
+    """
+    随机指定长度的字符串，只包含大小写，不包含数字，不包含特殊字符
+    :param length: 长度
+    :return: str
+    """
+    return helper.str_random(digits=False, length=length)
+
+
+def random_string_with_punctuation(length: int):
+    """
+    随机指定长度的字符串，只包含大小写、数字和特殊字符
+    :param length: 长度
+    :return: str
+    """
+    return helper.str_random(punctuation=True, length=length)
+
+
+def random_string_lower(length: int):
+    """
+    随机指定长度的字符串，只包含小写
+    :param length: 长度
+    :return: str
+    """
+    return helper.str_random(upper=False, digits=False, punctuation=False, length=length)
+
+
+def random_string_digits(length: int):
+    """
+    随机指定长度的字符串，只包含数字
+    :param length: 长度
+    :return: str
+    """
+    return helper.str_random(upper=False, lower=False, punctuation=False, length=length)

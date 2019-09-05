@@ -37,7 +37,7 @@ class BaseTest(object):
         self.info("[%s] - 系统初始化日志，文件名：%s" % (__name__, file_name))
 
         if file_name is not None:
-            if ".log" in file_name.strip():
+            if file_name.strip().endswith(".log"):
                 file_name = file_name.strip().replace(".log", "")
 
             file_name = "report/log/%s_%s.log" % (file_name, self.current_time_string)

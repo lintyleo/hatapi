@@ -1,0 +1,45 @@
+VvtechApi:
+  SIGN:
+    BODY_VV_SIGNATURE: vv_signature
+    BODY_VV_TIME: vv_time
+  LOGIN:
+    URI: /api/user/login
+    METHOD: POST
+    PARAM:
+      PASSWORD: password
+      IS_ANDROID: is_android
+      CLIENT_ID: client_id
+      MOBILE: mobile
+      VERSION: version
+    RESP:
+      DATA_KEY:
+        - flag
+        - msg
+        - data
+        - data.id
+        - data.ry_token
+        - data.token
+        - data.isidentity
+        - data.is_face
+        - data.is_family
+        - data.userJobCount
+        - data.userJobSuccessCount
+        - data.quickType
+        - data.promoterId
+      DATA_KEY_TOKEN: data.token
+
+WithdrawApi:
+  ADD:
+    URI: /api/v3/3/user/userWithdraw
+    METHOD: POST
+    PARAM:
+      PASSWORD: password
+      AMOUNT: amount
+      BANK_CARD_ID: bank_card_id
+      TOKEN: token
+      APP_SECRET: appSecret
+    RESP:
+      DATA_KEY:
+        - flag
+        - msg
+        - data

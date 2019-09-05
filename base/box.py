@@ -9,6 +9,7 @@ from base64 import b64encode
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5 as SignPKCS115
+from Crypto.Hash import MD5
 from requests import Session, Response
 from requests.auth import HTTPBasicAuth
 from urllib3 import disable_warnings
@@ -144,6 +145,29 @@ class BoxRequest(object):
 
         signature = b64encode(sign)
         return signature, str(timestamp)
+
+    @staticmethod
+    def get_sign_by_md5(token, body_params: dict):
+        """
+        根据 token 和请求正文，返回 规定的 字典，使用 MD5 方法
+        :param token:
+        :param body_params:  api_param
+        :return:
+        """
+        if body_params:
+            verify_data = sorted(body_params.items(), key=lambda item: item[0], reverse=False)
+        else:
+            verify_data = []
+
+        result = ""
+        for x in verify_data:
+            result += str(x[1])
+
+        timestamp = str(int(time.time()))
+        data = result + token + timestamp
+
+        signature = MD5.new(data.encode(_DEFAULT_ENCODING_UTF8)).hexdigest()
+        return signature, timestamp
 
     """
     属性

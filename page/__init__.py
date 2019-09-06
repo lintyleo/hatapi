@@ -115,18 +115,18 @@ class BaseApi(object):
         self.info("[%s] - 获取配置文件的值：data_key=%s, data_dict=%r!" % (__name__, data_key, data_dict))
         return parse_dict(dict_data=data_dict, data_key=data_key)
 
-    def _merge_resp(self, first_resp: dict, second_resp: dict):
+    def _merge_dict(self, first_dict: dict, second_dict: dict):
         """
         合并两个字典，作为一个字典，使用 update()
-        :param first_resp:
-        :param second_resp:
+        :param first_dict:
+        :param second_dict:
         :return: 两个字典的并集
         """
         # update() 是直接更新了 first_resp 这个字典（合并了 second_resp)
         # 注意 update() 返回值是 None，直接使用 first_resp 就可以了
-        first_resp.update(second_resp)
-        self.info("[%s] - 合并了两个字典，first=%r, second=%r" % (__name__, first_resp, second_resp))
-        return first_resp
+        first_dict.update(second_dict)
+        self.info("[%s] - 合并了两个字典，first=%r, second=%r" % (__name__, first_dict, second_dict))
+        return first_dict
 
     def _remove_none_param(self, params: dict):
         """

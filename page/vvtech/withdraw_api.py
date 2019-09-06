@@ -45,13 +45,13 @@ class WithdrawApi(VvtechApi):
         # 认证
         req_body = self._get_body_for_signature(token=token, request_body=req_data)
 
-        req_data.update(req_body)
-        req_data[self._get_config(self.__config, "ADD.PARAM.TOKEN")] = token
+        req_data_after_sign = self._merge_dict(first_dict=req_data, second_dict=req_body)
+        req_data_after_sign[self._get_config(self.__config, "ADD.PARAM.TOKEN")] = token
 
         # 真正的发请求
         self._send(uri=req_uri,
                    method=req_method,
-                   data_dict=req_data)
+                   data_dict=req_data_after_sign)
         # 返回响应的结果
         resp_body_key_list = self._get_config(self.__config, "ADD.RESP.DATA_KEY")
         return self._parse(body_key_list=resp_body_key_list)

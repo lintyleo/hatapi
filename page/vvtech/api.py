@@ -32,7 +32,7 @@ class VvtechApi(BaseApi):
                    data_dict=req_data
                    )
         # 返回响应的结果
-        resp_body_key_list = self._get_config(self.__config, "LOGIN.RESP.DATA_KEY")
+        resp_body_key_list = self._get_config(data_dict=self.__config, data_key="LOGIN.RESP.DATA_KEY")
         resp = self._parse(body_key_list=resp_body_key_list)
 
         data_key_token = self._get_config(self.__config, "LOGIN.RESP.DATA_KEY_TOKEN")

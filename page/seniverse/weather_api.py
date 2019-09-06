@@ -66,7 +66,7 @@ class WeatherApi(SeniverseApi):
                                      sub_data_key_list=sub_data_key_list)
         self.info("[%s] - 收到自定义解析响应 %r" % (__name__, list_resp))
 
-        resp_result = self._merge_resp(resp, list_resp)
+        resp_result = self._merge_dict(resp, list_resp)
         self.info("[%s] - 合并之前的解析 %r 和刚刚的自定义解析 %r " % (
             __name__, resp, list_resp))
 

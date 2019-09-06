@@ -82,7 +82,7 @@ WeatherApi:
          INDEX: 0
          SUB_DATA_KEY:
          - location
-         - suggestion
+         - now
          - last_update
          - location.id
          - location.name

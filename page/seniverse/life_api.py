@@ -44,4 +44,4 @@ class LifeApi(SeniverseApi):
         sub_data_key_list = self._get_config(self.__config, "SUGGEST.RESP.LIST.SUB_DATA_KEY")
         list_resp = self._parse_list(list_data_key=list_data_key,
                                      index=index, sub_data_key_list=sub_data_key_list)
-        return self._merge_resp(resp, list_resp)
+        return self._merge_dict(resp, list_resp)

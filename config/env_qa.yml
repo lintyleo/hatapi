@@ -5,3 +5,7 @@ pingxx:
 seniverse:
   schema: https
   host: api.seniverse.com
+
+vvtech:
+  schema: https
+  host: 19.89.49.45

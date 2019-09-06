@@ -1,12 +1,12 @@
 import allure
 import pytest
 
-from base import read_csv, read_yaml, read_txt, parse_dict
+from base import read_csv, read_yaml, parse_dict
 from case import BaseTest
-from page.pingxx import biz_create_charge
+from page.vvtech import biz_add_withdraw
 
 
-class TestChargesCreate(BaseTest):
+class TestWithdrawAdd(BaseTest):
     """
     标题： 在支付对象接口，使用合法有效的数据请求 创建支付的接口，创建成功
     作者： 刘挺立
@@ -14,13 +14,13 @@ class TestChargesCreate(BaseTest):
     邮件： liutingli@ascents.work
     """
     __test = dict(
-        collection=read_csv(current=__file__, file_path="test_charges_create.csv"),
-        config=read_yaml(current=__file__, file_path="../../config/env_active.yml", key="pingxx"),
+        collection=read_csv(current=__file__, file_path="test_withdraw_add.csv"),
+        config=read_yaml(current=__file__, file_path="../../config/env_active.yml", key="vvtech"),
         title="在支付对象接口，使用合法有效的数据请求，创建支付的接口，创建成功",
         case="https://dwz.cn/GUIf2ZeN",
-        feature="支付接口",
-        story="支付对象的创建",
-        tag=("api", "pingxx", "create", "valid"),
+        feature="取款接口",
+        story="取款对象的创建",
+        tag=("api", "vvtech", "add", "valid"),
         severity=allure.severity_level.CRITICAL
     )
 
@@ -61,47 +61,30 @@ class TestChargesCreate(BaseTest):
         """
         self.info("[%s] - 开始执行测试，使用数据：%r！ " % (__name__, data))
         # 准备数据 从 test_data 取数据
-        rsa_raw = data.get("RSA私钥")
-        if rsa_raw is not None and rsa_raw != "":
-            rsa_private = read_txt(current=__file__, file_path=rsa_raw)
-        else:
-            rsa_private = None
-
-        extra_raw = data.get("extra")
-        if extra_raw is not None and extra_raw != "":
-            extra_value = read_yaml(current=__file__,
-                                    file_path=extra_raw,
-                                    key="%s/data/extra" % data.get("数据编号"))
-        else:
-            extra_value = None
 
         data_input_dict = dict(
-            order_no=data.get("订单编号"),
+            vv_vv_signature=data.get("签名"),
+            vv_time=data.get("时间戳"),
+            app_secret=data.get("密钥"),
+            client_id=data.get("客户编号"),
+            password=data.get("密码"),
+            is_android=data.get("平台"),
+            mobile=data.get("手机号"),
+            version=data.get("版本"),
             amount=data.get("金额"),
-            channel=data.get("渠道"),
-            currency=data.get("货币"),
-            subject=data.get("主题"),
-            body=data.get("正文"),
-            description=data.get("描述"),
-            extra=extra_value,
-            app=dict(id=data.get("app")),
-            client_ip=data.get("client_ip"),
-            secret_key=data.get("密钥"),
-            rsa_private=rsa_private,
+            bank_card_id=data.get("卡号"),
             request=self.request,
             logger=self.logger
         )
 
         # 调用业务，使用上面准备的数据
         self.info("[%s] - 开始调用业务，使用数据 data_input_dict：%r！ " % (__name__, data_input_dict))
-        resp = biz_create_charge(data_input_dict)
+        resp, resp2 = biz_add_withdraw(data_input_dict)
 
         # 对比结果，使用 test_data 取到的期望，和上一步执行得到的结果进行对比
         self.info("[%s] - 开始进行断言，使用数据 resp：%r！ " % (__name__, resp))
         assert self.assert_equal(expected=data.get("期望状态码"), actual=resp.get("status_code"))
-        assert self.assert_equal(expected=data.get("期望object"), actual=resp.get("object"))
-        assert self.assert_equal(expected=bool(data.get("期望paid")), actual=resp.get("paid"))
-        assert self.assert_equal(expected=data.get("渠道"), actual=resp.get("channel"))
-        assert self.assert_equal(expected=data.get("金额"), actual=resp.get("amount"))
+        assert self.assert_equal(expected=data.get("期望状态码"), actual=resp2.get("status_code"))
+        assert self.assert_int_equal(expected=data.get("期望flag"), actual=resp2.get("flag"))
 
         self.info("[%s] - 结束执行测试，使用数据：%r！ " % (__name__, data))

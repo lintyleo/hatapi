@@ -1,0 +1,2 @@
+说明,数据编号,密钥,签名,时间戳,客户编号,密码,平台,手机号,版本,金额,卡号,期望状态码,期望flag
+普通合法数据,cct1,your_app_secret,your_init_sign,your_init_timestamp,your_client_code,123456,android,18988889999,1.1.1,888800,9988,200,9807
